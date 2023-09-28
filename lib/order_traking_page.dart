@@ -23,10 +23,10 @@ class OrderTrackingPageState extends State<OrderTrackingPage> {
   List<LatLng> polylineCoordinates = [];
   LocationData? currentLocation;
 
-  void getCurrentLocation() async{
+  void getCurrentLocation(){
     Location location = Location();
 
-    GoogleMapController googleMapController = await _controller.future;
+    // GoogleMapController googleMapController = await _controller.future;
 
     location.getLocation().then(
       (location){
@@ -34,25 +34,25 @@ class OrderTrackingPageState extends State<OrderTrackingPage> {
       },
     );
 
-    location.onLocationChanged.listen(
-      (newLoc) {
-        currentLocation = newLoc;
+    // location.onLocationChanged.listen(
+    //   (newLoc) {
+    //     currentLocation = newLoc;
 
-        googleMapController.animateCamera(
-          CameraUpdate.newCameraPosition(
-            CameraPosition(
-              zoom: 13.5,
-              target: LatLng(
-                newLoc.longitude!,
-                newLoc.latitude!,
-              ),
-            ),
-          ),
-        );
+    //     googleMapController.animateCamera(
+    //       CameraUpdate.newCameraPosition(
+    //         CameraPosition(
+    //           zoom: 13.5,
+    //           target: LatLng(
+    //             newLoc.longitude!,
+    //             newLoc.latitude!,
+    //           ),
+    //         ),
+    //       ),
+    //     );
 
-        setState(() {});
-      }
-    );
+    //     setState(() {});
+    //   }
+    // );
   }
 
   void getPolyPoints() async {
@@ -90,8 +90,8 @@ class OrderTrackingPageState extends State<OrderTrackingPage> {
           style: TextStyle(color: Colors.black, fontSize: 16),
         ),
       ),
-      body:  currentLocation == null
-      ? const Center(child: Text("Loading"))
+      body: currentLocation == null 
+      ? Center(child: Text("Loading"))
       : GoogleMap(
         initialCameraPosition: CameraPosition(
           target: LatLng(currentLocation!.latitude!, currentLocation!.longitude!), 
@@ -107,7 +107,7 @@ class OrderTrackingPageState extends State<OrderTrackingPage> {
         },
         markers: {
           Marker(
-            markerId: const MarkerId("currentLocation"), 
+            markerId: MarkerId("currentLocation"), 
             position: LatLng(currentLocation!.latitude!, currentLocation!.longitude!),
           ),
           Marker(
@@ -118,9 +118,6 @@ class OrderTrackingPageState extends State<OrderTrackingPage> {
             markerId: MarkerId("destination"), 
             position: destination,
           )
-        },
-        onMapCreated: (mapController) {
-          _controller.complete(mapController);
         },
       ),
     );
