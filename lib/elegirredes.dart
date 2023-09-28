@@ -36,7 +36,7 @@ class RedesSeleccion extends StatelessWidget {
             ),
             const SizedBox(height: 16), // Espacio en blanco entre botones
             ElevatedButton(
-              child: const Text('Red 5G Telcel *Mas adelante*'),
+              child: const Text('Red 5G Telcel'),
               onPressed: () {
                 Navigator.pushNamed(context, 'Redes5G');
               },
