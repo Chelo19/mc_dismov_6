@@ -23,7 +23,7 @@ class OrderTrackingPageState extends State<OrderTrackingPage> {
   List<LatLng> polylineCoordinates = [];
   LocationData? currentLocation;
 
-  void getCurrentLocation(){
+  void getCurrentLocation() async{
     Location location = Location();
 
     // GoogleMapController googleMapController = await _controller.future;
@@ -31,6 +31,7 @@ class OrderTrackingPageState extends State<OrderTrackingPage> {
     location.getLocation().then(
       (location){
         currentLocation = location;
+        getPolyPoints(currentLocation);
       },
     );
 
@@ -55,12 +56,12 @@ class OrderTrackingPageState extends State<OrderTrackingPage> {
     // );
   }
 
-  void getPolyPoints() async {
+  void getPolyPoints(currentLoc) async {
     PolylinePoints polylinePoints = PolylinePoints();
 
     PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
       google_api_key,
-      PointLatLng(sourceLocation.latitude, sourceLocation.longitude),
+      PointLatLng(currentLoc.latitude, currentLoc.longitude),
       PointLatLng(destination.latitude, destination.longitude)
     );
 
@@ -77,7 +78,6 @@ class OrderTrackingPageState extends State<OrderTrackingPage> {
   @override
   void initState(){
     getCurrentLocation();
-    getPolyPoints();
     super.initState();
   }
 
