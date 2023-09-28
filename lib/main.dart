@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         appBarTheme: const AppBarTheme(
           backgroundColor: Color.fromRGBO(13, 57, 180, 1),
-          elevation: 10,
+          elevation: 20,
         ),
       ),
       home: const OrderTrackingPage(),

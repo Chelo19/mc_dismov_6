@@ -256,6 +256,13 @@ class OrderTrackingPageState extends State<OrderTrackingPage> {
             fontSize: 24,
             fontWeight: FontWeight.bold,
             fontFamily: 'GoblinOne',
+            shadows: [
+                Shadow(
+                  offset: Offset(5, 5),
+                  blurRadius: 5.0,
+                  color: Color.fromRGBO(0, 0, 0, 0.658),
+                ),
+              ],
             ),
         ),
         centerTitle: true,
