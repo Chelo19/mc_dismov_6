@@ -12,13 +12,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'SignalFinder',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,
         appBarTheme: const AppBarTheme(
-          backgroundColor: Colors.white,
-          elevation: 0,
+          backgroundColor: Color.fromRGBO(13, 57, 180, 1),
+          elevation: 10,
         ),
       ),
       home: const OrderTrackingPage(),
