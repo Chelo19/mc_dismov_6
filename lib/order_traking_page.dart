@@ -18,6 +18,7 @@ class OrderTrackingPageState extends State<OrderTrackingPage> {
 
   static const LatLng sourceLocation = LatLng(37.33500926, -122.03272188);
   static const LatLng destination = LatLng(37.33429383, -122.06600055);
+  static const LatLng debugLocation = LatLng(37.334295, -122.3);
 
   List<LatLng> polylineCoordinates = [];
   LocationData? currentLocation;
