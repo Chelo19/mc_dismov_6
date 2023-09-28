@@ -9,14 +9,14 @@ import 'package:google_mao/elegirredes.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 
-class OrderTrackingPage extends StatefulWidget {
-  const OrderTrackingPage({Key? key}) : super(key: key);
+class Redes5G extends StatefulWidget {
+  const Redes5G({Key? key}) : super(key: key);
 
   @override
-  State<OrderTrackingPage> createState() => OrderTrackingPageState();
+  State<Redes5G> createState() => OrderTrackingPageState();
 }
 
-class OrderTrackingPageState extends State<OrderTrackingPage> {
+class OrderTrackingPageState extends State<Redes5G> {
   final Completer<GoogleMapController> _controller = Completer();
 
   static const LatLng sourceLocation = LatLng(37.33500926, -122.03272188);
@@ -313,9 +313,9 @@ class OrderTrackingPageState extends State<OrderTrackingPage> {
           Polygon(
             polygonId: const PolygonId("1"),
             points: coordenadasMTYTelcel4G,
-            fillColor: const Color.fromRGBO(34, 165, 34, 0.466),
+            fillColor: const Color.fromARGB(118, 24, 79, 150),
             strokeWidth: 1,
-            strokeColor: Color.fromARGB(255, 12, 129, 12),
+            strokeColor: const Color.fromARGB(255, 24, 99, 185),
           ), 
         },
       ),

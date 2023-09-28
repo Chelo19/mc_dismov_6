@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:google_mao/elegirredes.dart';
 import 'package:google_mao/order_traking_page.dart';
+import 'package:google_mao/redes5g.dart';
 
 void main() {
   runApp(const MyApp());
@@ -21,7 +23,12 @@ class MyApp extends StatelessWidget {
           elevation: 20,
         ),
       ),
-      home: const OrderTrackingPage(),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => const OrderTrackingPage(),
+        'RedesSeleccion':(context) => RedesSeleccion(),
+        'Redes5G': ((context) => const Redes5G())
+      },
     );
   }
 }
