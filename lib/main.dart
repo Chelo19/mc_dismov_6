@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_mao/elegirredes.dart';
 import 'package:google_mao/order_traking_page.dart';
+import 'package:google_mao/red_social.dart';
 import 'package:google_mao/redes5g.dart';
 
 void main() {
@@ -28,6 +29,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => const OrderTrackingPage(),
         'RedesSeleccion':(context) => RedesSeleccion(),
+        'RedSocialPage':(context) => RedSocialPage(),
         'Redes5G': ((context) => const Redes5G())
       },
     );

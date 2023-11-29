@@ -391,7 +391,7 @@ class OrderTrackingPageState extends State<OrderTrackingPage> {
           // Mostrar un Snackbar al presionar el botón
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Usted ya se encuentra en la zona con conexión óptimaaaaa'),
+              content: Text('Usted ya se encuentra en la zona con conexión óptima'),
               duration: const Duration(seconds: 3),
             ),
           );
