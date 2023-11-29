@@ -163,7 +163,7 @@ class OrderTrackingPageState extends State<OrderTrackingPage> {
   Set<Polygon> zona5G = {
     Polygon(
       polygonId: const PolygonId("zona5G"),
-      //ME DA ERROR EN coordenadasMTYTelcel4G
+      //points: coordenadasMTYTelcel4G,
       fillColor: const Color.fromRGBO(34, 165, 34, 0.466),
       strokeWidth: 1,
       strokeColor: Color.fromARGB(255, 12, 129, 12),
@@ -177,8 +177,11 @@ class OrderTrackingPageState extends State<OrderTrackingPage> {
     }
 
     // Utilizar el polígono de la zona 5G para determinar si la ubicación está dentro
+    LatLng currentLatLng = LatLng(currentLocation.latitude!, currentLocation.longitude!);
+
     LatLng point = LatLng(currentLocation.latitude!, currentLocation.longitude!);
     return isPointInPolygon(point, coordenadasMTYTelcel4G);
+
   }
 
   // Función para verificar si un punto está dentro de un polígono
@@ -293,7 +296,56 @@ class OrderTrackingPageState extends State<OrderTrackingPage> {
   Widget build(BuildContext context) {
 
     LatLng destinomarcador = coordenadamascerca(currentLocation, coordenadasMTYTelcel4G);
-   
+    Set<Polyline> polylines = {};
+    Set<Marker> markers = {};
+    Set<Polygon> polygons = {};
+
+    if (!estaEnZona5G(currentLocation)) {
+      // Agrega la polilínea solo si no está en la zona 5G
+      polylines.add(
+        Polyline(
+          polylineId: const PolylineId("Ruta"),
+          points: polylineCoordinates,
+          color: const Color.fromRGBO(13, 57, 180, 1),
+          width: 6,
+        ),
+      );
+    }
+
+    // Agrega los marcadores
+    markers.add(
+      Marker(
+        markerId: const MarkerId("currentLocation"),
+        icon: currentLocationIcon,
+        position: LatLng(currentLocation!.latitude!, currentLocation!.longitude!),
+      ),
+    );
+    markers.add(
+      Marker(
+        markerId: const MarkerId("source"),
+        icon: sourceIcon,
+        position: sourceLocation,
+      ),
+    );
+    markers.add(
+      Marker(
+        markerId: const MarkerId("destination"),
+        icon: destinationIcon,
+        position: destinomarcador,
+      ),
+    );
+
+    // Agrega el polígono de la zona 5G
+    polygons.add(
+      Polygon(
+        polygonId: const PolygonId("1"),
+        points: coordenadasMTYTelcel4G,
+        fillColor: const Color.fromRGBO(34, 165, 34, 0.466),
+        strokeWidth: 1,
+        strokeColor: Color.fromARGB(255, 12, 129, 12),
+      ),
+    );
+
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -325,45 +377,13 @@ class OrderTrackingPageState extends State<OrderTrackingPage> {
       currentLocation == null 
       ? const Center(child: Text("Cargando"))
       : GoogleMap(
-
         initialCameraPosition: CameraPosition(
           target: LatLng(currentLocation!.latitude!, currentLocation!.longitude!), 
           zoom: 13.5,
         ),
-        polylines: {
-          Polyline(
-              polylineId: const PolylineId("Ruta"),
-              points: polylineCoordinates,
-              color: const Color.fromRGBO(13, 57, 180, 1),
-              width: 6,
-            ),
-        },
-        markers: {
-          Marker(
-            markerId: const MarkerId("currentLocation"),
-            icon: currentLocationIcon, 
-            position: LatLng(currentLocation!.latitude!, currentLocation!.longitude!),
-          ),
-          Marker(
-            markerId: const MarkerId("source"),
-            icon: sourceIcon,
-            position: sourceLocation,
-          ),
-          Marker(
-            markerId: const MarkerId("destination"),
-            icon: destinationIcon,
-            position: destinomarcador,
-          )
-        },
-        polygons: estaEnZona5G(currentLocation) ? zona5G : {
-          Polygon(
-            polygonId: const PolygonId("1"),
-            points: coordenadasMTYTelcel4G,
-            fillColor: const Color.fromRGBO(34, 165, 34, 0.466),
-            strokeWidth: 1,
-            strokeColor: Color.fromARGB(255, 12, 129, 12),
-          ), 
-        },
+        polylines: polylines,
+        markers: markers,
+        polygons: polygons,
       ),
       floatingActionButton: estaEnZona5G(currentLocation)
           ? FloatingActionButton(
@@ -371,7 +391,7 @@ class OrderTrackingPageState extends State<OrderTrackingPage> {
           // Mostrar un Snackbar al presionar el botón
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Usted ya se encuentra en la zona con conexión óptima AAAAAAAAAAAAAAAAAAAAA'),
+              content: Text('Usted ya se encuentra en la zona con conexión óptimaaaaa'),
               duration: const Duration(seconds: 3),
             ),
           );
