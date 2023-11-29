@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class RedSocialPage extends StatefulWidget {
   const RedSocialPage({Key? key}) : super(key: key);
@@ -11,12 +12,73 @@ class RedSocialPage extends StatefulWidget {
 class _RedSocialPageState extends State<RedSocialPage> {
   Set<Marker> markers = <Marker>{};
   TextEditingController resenaController = TextEditingController();
+  late SharedPreferences prefs;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadMarkers();
+  }
+
+  Future<void> _loadMarkers() async {
+    prefs = await SharedPreferences.getInstance();
+    final List<String>? savedMarkers = prefs.getStringList('markers');
+    if (savedMarkers != null) {
+      setState(() {
+        markers = savedMarkers.map((String markerString) {
+          final List<String> parts = markerString.split(',');
+          return Marker(
+            markerId: MarkerId(parts[0]),
+            position: LatLng(double.parse(parts[1]), double.parse(parts[2])),
+            infoWindow: InfoWindow(
+              title: 'Reseña',
+              snippet: parts[3],
+            ),
+          );
+        }).toSet();
+      });
+    }
+  }
+
+  Future<void> _saveMarkers() async {
+    final List<String> markerStrings = markers.map((Marker marker) {
+      return '${marker.markerId.value},${marker.position.latitude},${marker.position.longitude},${marker.infoWindow!.snippet}';
+    }).toList();
+
+    await prefs.setStringList('markers', markerStrings);
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Red Social'),
+      ),
+      endDrawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            DrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.blue,
+              ),
+              child: Text(
+                'Reseñas',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                ),
+              ),
+            ),
+            for (Marker marker in markers)
+              ListTile(
+                title: Text(marker.infoWindow!.snippet!),
+                onTap: () {
+                  Navigator.pop(context);
+                },
+              ),
+          ],
+        ),
       ),
       body: Column(
         children: [
@@ -53,7 +115,7 @@ class _RedSocialPageState extends State<RedSocialPage> {
               const SizedBox(width: 16),
               ElevatedButton(
                 onPressed: () {
-                  _borrarResena(); // Llamada para borrar la última reseña
+                  _borrarResena();
                 },
                 child: const Text('Borrar Última Reseña'),
               ),
@@ -150,6 +212,7 @@ class _RedSocialPageState extends State<RedSocialPage> {
       setState(() {
         markers.add(marker);
         resenaController.clear();
+        _saveMarkers(); // Guarda los marcadores después de agregar una reseña
       });
     }
   }
@@ -158,7 +221,14 @@ class _RedSocialPageState extends State<RedSocialPage> {
     if (markers.isNotEmpty) {
       setState(() {
         markers.remove(markers.last);
+        _saveMarkers(); // Guarda los marcadores después de borrar una reseña
       });
     }
   }
+}
+
+void main() {
+  runApp(const MaterialApp(
+    home: RedSocialPage(),
+  ));
 }
