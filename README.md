@@ -1,16 +1,23 @@
-# google_mao
+Integrantes equipo #6
 
-A new Flutter project.
+Roberto de Jesus Luna Salas 
+2077320 ITS
+Semestre: 7
 
-## Getting Started
+Sergio René Martínez González
+2078123 ITS
+Semestre: 7
 
-This project is a starting point for a Flutter application.
+Marcelo Amado De León Gómez
+2077432 ITS
+Semestre: 7
 
-A few resources to get you started if this is your first Flutter project:
+Juan Antonio Zorola Martinez 
+1724975 ITS
+Semestre: 9
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+David Alejandro Ortiz Puente
+1889372 ITS
+Semestre: 9
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Proyecto Flutter
