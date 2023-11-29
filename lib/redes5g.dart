@@ -1,3 +1,4 @@
+//archivo redes5g.dart
 import 'dart:async';
 import 'dart:math';
 import 'package:google_fonts/google_fonts.dart';

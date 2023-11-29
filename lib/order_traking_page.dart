@@ -1,3 +1,4 @@
+//archivo order_traking_page.dart
 import 'dart:async';
 import 'dart:math';
 import 'package:google_fonts/google_fonts.dart';
@@ -157,8 +158,54 @@ class OrderTrackingPageState extends State<OrderTrackingPage> {
   BitmapDescriptor sourceIcon = BitmapDescriptor.defaultMarker;
   BitmapDescriptor destinationIcon = BitmapDescriptor.defaultMarker;
   BitmapDescriptor currentLocationIcon = BitmapDescriptor.defaultMarker;
-  
-  
+
+  // Define la zona 5G como un conjunto de polígonos
+  Set<Polygon> zona5G = {
+    Polygon(
+      polygonId: const PolygonId("zona5G"),
+      //points: coordenadasMTYTelcel4G,
+      fillColor: const Color.fromRGBO(34, 165, 34, 0.466),
+      strokeWidth: 1,
+      strokeColor: Color.fromARGB(255, 12, 129, 12),
+    ),
+  };
+
+  // Función para verificar si la ubicación está dentro de la zona 5G
+  bool estaEnZona5G(LocationData? currentLocation) {
+    if (currentLocation == null) {
+      return false;
+    }
+
+    // Utilizar el polígono de la zona 5G para determinar si la ubicación está dentro
+    LatLng currentLatLng = LatLng(currentLocation.latitude!, currentLocation.longitude!);
+
+    LatLng point = LatLng(currentLocation.latitude!, currentLocation.longitude!);
+    return isPointInPolygon(point, coordenadasMTYTelcel4G);
+
+  }
+
+  // Función para verificar si un punto está dentro de un polígono
+  bool isPointInPolygon(LatLng point, List<LatLng> polygon) {
+    int intersectCount = 0;
+
+    for (int j = 0; j < polygon.length - 1; j++) {
+      if ((polygon[j].longitude! <= point.longitude! &&
+          point.longitude! < polygon[j + 1].longitude!) ||
+          (polygon[j + 1].longitude! <= point.longitude! &&
+              point.longitude! < polygon[j].longitude!)) {
+        if (point.latitude! <
+            polygon[j].latitude! +
+                (point.longitude! - polygon[j].longitude!) /
+                    (polygon[j + 1].longitude! - polygon[j].longitude!) *
+                    (polygon[j + 1].latitude! - polygon[j].latitude!)) {
+          intersectCount++;
+        }
+      }
+    }
+
+    return (intersectCount % 2) == 1;
+  }
+
   void getCurrentLocation() async{
     Location location = Location();
 
@@ -241,6 +288,7 @@ class OrderTrackingPageState extends State<OrderTrackingPage> {
   void initState(){
     getCurrentLocation();
     setCustomMarkerIcon();
+
     super.initState();
   }
 
@@ -248,7 +296,56 @@ class OrderTrackingPageState extends State<OrderTrackingPage> {
   Widget build(BuildContext context) {
 
     LatLng destinomarcador = coordenadamascerca(currentLocation, coordenadasMTYTelcel4G);
-   
+    Set<Polyline> polylines = {};
+    Set<Marker> markers = {};
+    Set<Polygon> polygons = {};
+
+    if (!estaEnZona5G(currentLocation)) {
+      // Agrega la polilínea solo si no está en la zona 5G
+      polylines.add(
+        Polyline(
+          polylineId: const PolylineId("Ruta"),
+          points: polylineCoordinates,
+          color: const Color.fromRGBO(13, 57, 180, 1),
+          width: 6,
+        ),
+      );
+    }
+
+    // Agrega los marcadores
+    markers.add(
+      Marker(
+        markerId: const MarkerId("currentLocation"),
+        icon: currentLocationIcon,
+        position: LatLng(currentLocation!.latitude!, currentLocation!.longitude!),
+      ),
+    );
+    markers.add(
+      Marker(
+        markerId: const MarkerId("source"),
+        icon: sourceIcon,
+        position: sourceLocation,
+      ),
+    );
+    markers.add(
+      Marker(
+        markerId: const MarkerId("destination"),
+        icon: destinationIcon,
+        position: destinomarcador,
+      ),
+    );
+
+    // Agrega el polígono de la zona 5G
+    polygons.add(
+      Polygon(
+        polygonId: const PolygonId("1"),
+        points: coordenadasMTYTelcel4G,
+        fillColor: const Color.fromRGBO(34, 165, 34, 0.466),
+        strokeWidth: 1,
+        strokeColor: Color.fromARGB(255, 12, 129, 12),
+      ),
+    );
+
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -284,41 +381,24 @@ class OrderTrackingPageState extends State<OrderTrackingPage> {
           target: LatLng(currentLocation!.latitude!, currentLocation!.longitude!), 
           zoom: 13.5,
         ),
-        polylines: {
-          Polyline(
-              polylineId: const PolylineId("Ruta"),
-              points: polylineCoordinates,
-              color: const Color.fromRGBO(13, 57, 180, 1),
-              width: 6,
-            ),
-        },
-        markers: {
-          Marker(
-            markerId: const MarkerId("currentLocation"),
-            icon: currentLocationIcon, 
-            position: LatLng(currentLocation!.latitude!, currentLocation!.longitude!),
-          ),
-          Marker(
-            markerId: const MarkerId("source"),
-            icon: sourceIcon,
-            position: sourceLocation,
-          ),
-          Marker(
-            markerId: const MarkerId("destination"),
-            icon: destinationIcon,
-            position: destinomarcador,
-          )
-        },
-        polygons: {
-          Polygon(
-            polygonId: const PolygonId("1"),
-            points: coordenadasMTYTelcel4G,
-            fillColor: const Color.fromRGBO(34, 165, 34, 0.466),
-            strokeWidth: 1,
-            strokeColor: Color.fromARGB(255, 12, 129, 12),
-          ), 
-        },
+        polylines: polylines,
+        markers: markers,
+        polygons: polygons,
       ),
+      floatingActionButton: estaEnZona5G(currentLocation)
+          ? FloatingActionButton(
+        onPressed: () {
+          // Mostrar un Snackbar al presionar el botón
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Usted ya se encuentra en la zona con conexión óptima'),
+              duration: const Duration(seconds: 3),
+            ),
+          );
+        },
+        child: Icon(Icons.info),
+      )
+          : null,
     );
   }
 }

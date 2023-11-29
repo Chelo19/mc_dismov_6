@@ -1,3 +1,4 @@
+//archivo elegirredes.dart
 import 'package:flutter/material.dart';
 import 'package:google_mao/main.dart';
 
@@ -40,6 +41,12 @@ class RedesSeleccion extends StatelessWidget {
               onPressed: () {
                 Navigator.pushNamed(context, 'Redes5G');
               },
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pushNamed(context, 'RedSocialPage'); // 'RedSocial' es el nombre de la ruta para la nueva interfaz.
+              },
+              child: Text('Red Social'),
             ),
           ],
         ),
