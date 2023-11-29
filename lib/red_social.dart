@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class RedSocialPage extends StatefulWidget {
-  const RedSocialPage({Key? key});
+  const RedSocialPage({Key? key}) : super(key: key);
 
   @override
   _RedSocialPageState createState() => _RedSocialPageState();
@@ -90,10 +90,37 @@ class _RedSocialPageState extends State<RedSocialPage> {
             ),
             TextButton(
               onPressed: () {
-                _agregarResenaEnPosicion(position);
-                Navigator.of(context).pop();
+                _confirmarAgregarResena(context, position);
               },
               child: const Text('Guardar'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _confirmarAgregarResena(BuildContext context, LatLng position) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Confirmar'),
+          content: const Text('¿Estás seguro de agregar esta reseña en esta ubicación?'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('No'),
+            ),
+            TextButton(
+              onPressed: () {
+                _agregarResenaEnPosicion(position);
+                Navigator.of(context).pop();
+                Navigator.of(context).pop();
+              },
+              child: const Text('Sí'),
             ),
           ],
         );
@@ -134,10 +161,4 @@ class _RedSocialPageState extends State<RedSocialPage> {
       });
     }
   }
-}
-
-void main() {
-  runApp(const MaterialApp(
-    home: RedSocialPage(),
-  ));
 }
