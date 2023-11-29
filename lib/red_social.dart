@@ -59,25 +59,53 @@ class _RedSocialPageState extends State<RedSocialPage> {
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
-            DrawerHeader(
-              decoration: BoxDecoration(
-                color: Colors.blue,
-              ),
-              child: Text(
-                'Reseñas',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
-                ),
+            Container(
+              padding: const EdgeInsets.only(top: 80, bottom: 30, left: 16, right: 16),
+              color: const Color.fromARGB(255, 0, 89, 161),
+              child: const Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Explora las Reseñas',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(height: 8),
+                  Text(
+                    'Descubre experiencias de otros usuarios',
+                    style: TextStyle(
+                      color: Colors.white70,
+                      fontSize: 14,
+                    ),
+                  ),
+                ],
               ),
             ),
             for (Marker marker in markers)
               ListTile(
-                title: Text(marker.infoWindow!.snippet!),
+                title: Text(
+                  marker.infoWindow.snippet!,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                subtitle: Text(
+                  'Lat: ${marker.position.latitude}, Long: ${marker.position.longitude}',
+                  style: const TextStyle(
+                    fontSize: 12,
+                    fontStyle: FontStyle.italic,
+                  ),
+                ),
+                leading: const Icon(
+                  Icons.location_pin,
+                  color: Colors.blue,
+                ),
                 onTap: () {
-                  // Cierra el Drawer
                   Navigator.pop(context);
-                  // Centra y selecciona el marcador en el mapa
                   _moveToMarker(marker);
                 },
               ),
