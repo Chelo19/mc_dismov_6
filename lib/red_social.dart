@@ -1,37 +1,28 @@
 import 'package:flutter/material.dart';
-import 'dart:async';
-import 'dart:math';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_polyline_points/flutter_polyline_points.dart';
-import 'package:google_mao/constants.dart';
-import 'package:google_mao/elegirredes.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:location/location.dart';
-
-import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class RedSocialPage extends StatefulWidget {
+  const RedSocialPage({Key? key});
+
   @override
   _RedSocialPageState createState() => _RedSocialPageState();
 }
 
 class _RedSocialPageState extends State<RedSocialPage> {
-  Set<Marker> markers = Set<Marker>();
+  Set<Marker> markers = <Marker>{};
   TextEditingController resenaController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Red Social'),
+        title: const Text('Red Social'),
       ),
       body: Column(
         children: [
           Expanded(
             child: GoogleMap(
-              initialCameraPosition: CameraPosition(
+              initialCameraPosition: const CameraPosition(
                 target: LatLng(25.689470285602457, -100.31649801084538), // Ubicación de referencia
                 zoom: 13.5,
               ),
@@ -45,7 +36,7 @@ class _RedSocialPageState extends State<RedSocialPage> {
             padding: const EdgeInsets.all(8.0),
             child: TextField(
               controller: resenaController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 hintText: 'Deja tu reseña...',
               ),
             ),
@@ -54,7 +45,7 @@ class _RedSocialPageState extends State<RedSocialPage> {
             onPressed: () {
               _agregarResena();
             },
-            child: Text('Agregar Reseña'),
+            child: const Text('Agregar Reseña'),
           ),
         ],
       ),
@@ -66,14 +57,14 @@ class _RedSocialPageState extends State<RedSocialPage> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text('Agregar Reseña'),
+          title: const Text('Agregar Reseña'),
           content: SingleChildScrollView(
             child: Column(
               children: [
                 Text('Ubicación: ${position.latitude}, ${position.longitude}'),
                 TextField(
                   controller: resenaController,
-                  decoration: InputDecoration(labelText: 'Reseña'),
+                  decoration: const InputDecoration(labelText: 'Reseña'),
                 ),
               ],
             ),
@@ -83,14 +74,14 @@ class _RedSocialPageState extends State<RedSocialPage> {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text('Cancelar'),
+              child: const Text('Cancelar'),
             ),
             TextButton(
               onPressed: () {
-                _agregarResena();
+                _agregarResenaEnPosicion(position);
                 Navigator.of(context).pop();
               },
-              child: Text('Guardar'),
+              child: const Text('Guardar'),
             ),
           ],
         );
@@ -99,10 +90,20 @@ class _RedSocialPageState extends State<RedSocialPage> {
   }
 
   void _agregarResena() {
+    // Obtiene la ubicación actual del usuario o la ubicación seleccionada
+    // Aquí puedes obtener la ubicación actual del usuario usando Location o cualquier otro método
+    LatLng selectedPosition = const LatLng(25.689470285602457, -100.31649801084538);
+
+    if (resenaController.text.isNotEmpty) {
+      _agregarResenaEnPosicion(selectedPosition);
+    }
+  }
+
+  void _agregarResenaEnPosicion(LatLng position) {
     if (resenaController.text.isNotEmpty) {
       final Marker marker = Marker(
         markerId: MarkerId(DateTime.now().toString()),
-        position: LatLng(25.689470285602457, -100.31649801084538), // Usar la ubicación actual o la seleccionada
+        position: position,
         infoWindow: InfoWindow(
           title: 'Reseña',
           snippet: resenaController.text,
@@ -115,4 +116,10 @@ class _RedSocialPageState extends State<RedSocialPage> {
       });
     }
   }
+}
+
+void main() {
+  runApp(const MaterialApp(
+    home: RedSocialPage(),
+  ));
 }
