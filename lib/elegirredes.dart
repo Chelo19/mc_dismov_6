@@ -46,7 +46,7 @@ class RedesSeleccion extends StatelessWidget {
               onPressed: () {
                 Navigator.pushNamed(context, 'RedSocialPage'); // 'RedSocial' es el nombre de la ruta para la nueva interfaz.
               },
-              child: Text('Red Social'),
+              child: const Text('Red Social'),
             ),
           ],
         ),
