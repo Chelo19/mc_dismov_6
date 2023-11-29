@@ -123,34 +123,65 @@ class OrderTrackingPageState extends State<OrderTrackingPage> {
 
   // Función para encontrar la coordenada más cercana a la ubicación actual
   LatLng coordenadamascerca(LocationData? currentLocation, List<LatLng> coordinates) {
-    if (currentLocation == null) {
-      // Si no se pudo obtener la ubicación actual, devolvemos una coordenada en el centro de monterrey
-      return const LatLng(25.689470285602457, -100.31649801084538);
+    if (currentLocation == null || coordinates.isEmpty) {
+      return LatLng(25.689470285602457, -100.31649801084538);
     }
 
     double minDistance = double.infinity;
     LatLng nearestCoordinate = coordinates[0];
 
-    // Iteramos a través de todas las coordenadas en la lista
-    for (LatLng coordinate in coordinates) {
-      double x1 = currentLocation.latitude!;
-      double y1 = currentLocation.longitude!;
-      double x2 = coordinate.latitude;
-      double y2 = coordinate.longitude;
+    for (int i = 1; i < coordinates.length; i++) {
+      LatLng pointA = coordinates[i - 1];
+      LatLng pointB = coordinates[i];
 
-      //Formula para sacar la distancia entre dos coordenadas
-      double distance = sqrt(pow(x2 - x1, 2) + pow(y2 - y1, 2));
+      // Calculamos la distancia entre los puntos a lo largo de la ruta
+      double distance = calculateDistance(currentLocation, pointA, pointB);
 
-
-      // Comparamos la distancia actual con la distancia mínima
+      // Verificamos si la distancia actual es menor a la mínima encontrada
       if (distance < minDistance) {
         minDistance = distance;
-        nearestCoordinate = coordinate;
+        nearestCoordinate = pointA;
       }
     }
 
-  // Devolvemos la coordenada más cercana encontrada
     return nearestCoordinate;
+  }
+
+  // Función para calcular la distancia perpendicular desde la ubicación actual a un segmento de la ruta
+  double calculateDistance(LocationData currentLocation, LatLng pointA, LatLng pointB) {
+    double x = currentLocation.latitude!;
+    double y = currentLocation.longitude!;
+    double x1 = pointA.latitude;
+    double y1 = pointA.longitude;
+    double x2 = pointB.latitude;
+    double y2 = pointB.longitude;
+
+    double A = x - x1;
+    double B = y - y1;
+    double C = x2 - x1;
+    double D = y2 - y1;
+
+    double dot = A * C + B * D;
+    double lenSq = C * C + D * D;
+    double param = dot / lenSq;
+
+    double xx, yy;
+
+    if (param < 0 || (x1 == x2 && y1 == y2)) {
+      xx = x1;
+      yy = y1;
+    } else if (param > 1) {
+      xx = x2;
+      yy = y2;
+    } else {
+      xx = x1 + param * C;
+      yy = y1 + param * D;
+    }
+
+    double dx = x - xx;
+    double dy = y - yy;
+
+    return sqrt(dx * dx + dy * dy);
   }
 
   LocationData? currentLocation;
@@ -174,6 +205,7 @@ class OrderTrackingPageState extends State<OrderTrackingPage> {
   bool estaEnZona5G(LocationData? currentLocation) {
     if (currentLocation == null) {
       return false;
+      
     }
 
     // Utilizar el polígono de la zona 5G para determinar si la ubicación está dentro
@@ -189,15 +221,15 @@ class OrderTrackingPageState extends State<OrderTrackingPage> {
     int intersectCount = 0;
 
     for (int j = 0; j < polygon.length - 1; j++) {
-      if ((polygon[j].longitude! <= point.longitude! &&
-          point.longitude! < polygon[j + 1].longitude!) ||
-          (polygon[j + 1].longitude! <= point.longitude! &&
-              point.longitude! < polygon[j].longitude!)) {
-        if (point.latitude! <
-            polygon[j].latitude! +
-                (point.longitude! - polygon[j].longitude!) /
-                    (polygon[j + 1].longitude! - polygon[j].longitude!) *
-                    (polygon[j + 1].latitude! - polygon[j].latitude!)) {
+      if ((polygon[j].longitude <= point.longitude &&
+          point.longitude < polygon[j + 1].longitude) ||
+          (polygon[j + 1].longitude <= point.longitude &&
+              point.longitude < polygon[j].longitude)) {
+        if (point.latitude <
+            polygon[j].latitude +
+                (point.longitude - polygon[j].longitude) /
+                    (polygon[j + 1].longitude - polygon[j].longitude) *
+                    (polygon[j + 1].latitude - polygon[j].latitude)) {
           intersectCount++;
         }
       }
@@ -291,13 +323,14 @@ class OrderTrackingPageState extends State<OrderTrackingPage> {
         ),
       );
     }
-
     // Agrega los marcadores
     markers.add(
       Marker(
         markerId: const MarkerId("currentLocation"),
         icon: currentLocationIcon,
-        position: LatLng(currentLocation!.latitude!, currentLocation!.longitude!),
+        position: currentLocation != null
+            ? LatLng(currentLocation!.latitude!, currentLocation!.longitude!)
+            : const LatLng(25.7225, -100.3443), // Esto asigna valores por defecto si currentLocation es nulo
       ),
     );
     markers.add(
@@ -322,7 +355,7 @@ class OrderTrackingPageState extends State<OrderTrackingPage> {
         points: coordenadasMTYTelcel4G,
         fillColor: const Color.fromRGBO(34, 165, 34, 0.466),
         strokeWidth: 1,
-        strokeColor: Color.fromARGB(255, 12, 129, 12),
+        strokeColor: const Color.fromARGB(255, 12, 129, 12),
       ),
     );
 

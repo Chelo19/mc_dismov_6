@@ -189,15 +189,15 @@ class OrderTrackingPageState extends State<Redes5G> {
     int intersectCount = 0;
 
     for (int j = 0; j < polygon.length - 1; j++) {
-      if ((polygon[j].longitude! <= point.longitude! &&
-          point.longitude! < polygon[j + 1].longitude!) ||
-          (polygon[j + 1].longitude! <= point.longitude! &&
-              point.longitude! < polygon[j].longitude!)) {
-        if (point.latitude! <
-            polygon[j].latitude! +
-                (point.longitude! - polygon[j].longitude!) /
-                    (polygon[j + 1].longitude! - polygon[j].longitude!) *
-                    (polygon[j + 1].latitude! - polygon[j].latitude!)) {
+      if ((polygon[j].longitude <= point.longitude &&
+          point.longitude < polygon[j + 1].longitude) ||
+          (polygon[j + 1].longitude <= point.longitude &&
+              point.longitude < polygon[j].longitude)) {
+        if (point.latitude <
+            polygon[j].latitude +
+                (point.longitude - polygon[j].longitude) /
+                    (polygon[j + 1].longitude - polygon[j].longitude) *
+                    (polygon[j + 1].latitude - polygon[j].latitude)) {
           intersectCount++;
         }
       }
@@ -297,7 +297,9 @@ class OrderTrackingPageState extends State<Redes5G> {
       Marker(
         markerId: const MarkerId("currentLocation"),
         icon: currentLocationIcon,
-        position: LatLng(currentLocation!.latitude!, currentLocation!.longitude!),
+        position: currentLocation != null
+            ? LatLng(currentLocation!.latitude!, currentLocation!.longitude!)
+            : const LatLng(25.7225, -100.3443), // Esto asigna valores por defecto si currentLocation es nulo
       ),
     );
     markers.add(
