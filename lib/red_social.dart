@@ -13,6 +13,7 @@ class _RedSocialPageState extends State<RedSocialPage> {
   Set<Marker> markers = <Marker>{};
   TextEditingController resenaController = TextEditingController();
   late SharedPreferences prefs;
+  late GoogleMapController mapController; // Agrega el controlador del mapa
 
   @override
   void initState() {
@@ -74,7 +75,10 @@ class _RedSocialPageState extends State<RedSocialPage> {
               ListTile(
                 title: Text(marker.infoWindow!.snippet!),
                 onTap: () {
+                  // Cierra el Drawer
                   Navigator.pop(context);
+                  // Centra y selecciona el marcador en el mapa
+                  _moveToMarker(marker);
                 },
               ),
           ],
@@ -91,6 +95,10 @@ class _RedSocialPageState extends State<RedSocialPage> {
               markers: markers,
               onTap: (LatLng position) {
                 _mostrarDialogoResena(context, position);
+              },
+              // Captura el controlador del mapa cuando se crea
+              onMapCreated: (controller) {
+                mapController = controller;
               },
             ),
           ),
@@ -212,7 +220,7 @@ class _RedSocialPageState extends State<RedSocialPage> {
       setState(() {
         markers.add(marker);
         resenaController.clear();
-        _saveMarkers(); // Guarda los marcadores después de agregar una reseña
+        _saveMarkers();
       });
     }
   }
@@ -221,9 +229,13 @@ class _RedSocialPageState extends State<RedSocialPage> {
     if (markers.isNotEmpty) {
       setState(() {
         markers.remove(markers.last);
-        _saveMarkers(); // Guarda los marcadores después de borrar una reseña
+        _saveMarkers();
       });
     }
+  }
+
+  void _moveToMarker(Marker marker) {
+    mapController.animateCamera(CameraUpdate.newLatLng(marker.position));
   }
 }
 
