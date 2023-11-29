@@ -32,7 +32,7 @@ class RedesSeleccion extends StatelessWidget {
             image: const AssetImage('assets/background_patterns.jpg'), // Ruta de la imagen
             fit: BoxFit.cover, // Ajustar la imagen al contenedor
             colorFilter: ColorFilter.mode(
-              const Color.fromARGB(255, 177, 176, 176).withOpacity(0.6), // Opacidad del patrón
+              Color.fromARGB(255, 197, 195, 195).withOpacity(0.1), // Opacidad del patrón
               BlendMode.darken, // Modo de fusión
             ),
           ),
