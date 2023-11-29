@@ -23,7 +23,7 @@ class _RedSocialPageState extends State<RedSocialPage> {
           Expanded(
             child: GoogleMap(
               initialCameraPosition: const CameraPosition(
-                target: LatLng(25.689470285602457, -100.31649801084538), // Ubicación de referencia
+                target: LatLng(25.689470285602457, -100.31649801084538),
                 zoom: 13.5,
               ),
               markers: markers,
@@ -41,11 +41,23 @@ class _RedSocialPageState extends State<RedSocialPage> {
               ),
             ),
           ),
-          ElevatedButton(
-            onPressed: () {
-              _agregarResena();
-            },
-            child: const Text('Agregar Reseña'),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ElevatedButton(
+                onPressed: () {
+                  _agregarResena();
+                },
+                child: const Text('Agregar Reseña'),
+              ),
+              const SizedBox(width: 16),
+              ElevatedButton(
+                onPressed: () {
+                  _borrarResena(); // Llamada para borrar la última reseña
+                },
+                child: const Text('Borrar Última Reseña'),
+              ),
+            ],
           ),
         ],
       ),
@@ -90,8 +102,6 @@ class _RedSocialPageState extends State<RedSocialPage> {
   }
 
   void _agregarResena() {
-    // Obtiene la ubicación actual del usuario o la ubicación seleccionada
-    // Aquí puedes obtener la ubicación actual del usuario usando Location o cualquier otro método
     LatLng selectedPosition = const LatLng(25.689470285602457, -100.31649801084538);
 
     if (resenaController.text.isNotEmpty) {
@@ -113,6 +123,14 @@ class _RedSocialPageState extends State<RedSocialPage> {
       setState(() {
         markers.add(marker);
         resenaController.clear();
+      });
+    }
+  }
+
+  void _borrarResena() {
+    if (markers.isNotEmpty) {
+      setState(() {
+        markers.remove(markers.last);
       });
     }
   }
