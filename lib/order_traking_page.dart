@@ -354,7 +354,7 @@ class OrderTrackingPageState extends State<OrderTrackingPage> {
     ],
       ),
       body: currentLocation == null
-      ? const Center(child: Text("Cargando"))
+      ? const Center(child: Text("Cargando."))
       : GoogleMap(
         initialCameraPosition: CameraPosition(
           target: LatLng(currentLocation!.latitude!, currentLocation!.longitude!),
