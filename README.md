@@ -1,5 +1,7 @@
 Integrantes equipo #6
 
+Nuevo Proyecto Ordinario
+
 Roberto de Jesus Luna Salas 
 2077320 ITS
 Semestre: 7
