@@ -12,9 +12,9 @@ class CheckAnimals extends StatefulWidget {
 }
 
 class _CheckAnimalsState extends State<CheckAnimals> {
-  late String current_user = 'd70b27a2-0297-4d60-90b4-f69998fc6a11';  // esto se tiene que cambiar a una funcion que obtenga el id
-  late String email = 'marcelo1@gmail.com';  // esto se tiene que cambiar a una funcion que obtenga el id
-  late String pass = 'marcelo';  // esto se tiene que cambiar a una funcion que obtenga el id
+  late String current_user = '20df4d63-710a-4b28-8ad7-e88d48f9933b';  // esto se tiene que cambiar a una funcion que obtenga el id
+  late String email = 'lunasalasr@gmail.com';  // esto se tiene que cambiar a una funcion que obtenga el id
+  late String pass = 'Roberto';  // esto se tiene que cambiar a una funcion que obtenga el id
 
   List<Map<String, dynamic>> animalsData = [];
 
@@ -60,10 +60,10 @@ class _CheckAnimalsState extends State<CheckAnimals> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Mis mascotas'),
+        title: const Text('Mis mascotas'),
       ),
       body: Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
