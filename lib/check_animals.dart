@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:google_mao/check_individual_animal.dart';
+import 'package:google_mao/check_individual_animal_as_owner.dart';
 import 'package:supabase/supabase.dart';
 
 class CheckAnimals extends StatefulWidget {
@@ -39,7 +41,7 @@ class _CheckAnimalsState extends State<CheckAnimals> {
     List<Map<String,dynamic>> tempAnimalsData;
     tempAnimalsData = List<Map<String, dynamic>>.from(data);
 
-    // print(tempAnimalsData);
+    print(tempAnimalsData);
 
     setState(() {
       animalsData = tempAnimalsData;
@@ -58,7 +60,7 @@ class _CheckAnimalsState extends State<CheckAnimals> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Tus animales'),
+        title: Text('Mis mascotas'),
       ),
       body: Padding(
         padding: EdgeInsets.all(16.0),
@@ -70,11 +72,18 @@ class _CheckAnimalsState extends State<CheckAnimals> {
                 itemCount: animalsData.length,
                 itemBuilder: (context, index) {
                   final animal = animalsData[index];
-
-                  return Card(
-                    child: ListTile(
-                      title: Text('Nombre: ${animal['name']}'),
-                      subtitle: Text('Especie: ${animal['species']}'),
+                  return GestureDetector(
+                    onTap: () => {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => CheckIndividualAnimalAsOwner(supabase: widget.supabase, animalId: animal['id'],)),
+                      ),
+                    },
+                    child: Card(
+                      child: ListTile(
+                        title: Text('Nombre de mascota: ${animal['name']}'),
+                        subtitle: Text('Especie: ${animal['species']}'),
+                      ),
                     ),
                   );
                 },

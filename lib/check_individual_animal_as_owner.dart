@@ -1,21 +1,44 @@
 import 'package:flutter/material.dart';
 import 'package:google_mao/check_animals.dart';
 import 'package:supabase/supabase.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
 
-class CheckIndividualAnimal extends StatefulWidget {
-  CheckIndividualAnimal({required this.supabase, required this.animalId});
+class CheckIndividualAnimalAsOwner extends StatefulWidget {
+  CheckIndividualAnimalAsOwner({required this.supabase, required this.animalId});
   final SupabaseClient supabase;
   final int animalId;
   List<String> imgPaths = [];
 
   @override
-  _CheckIndividualAnimalState createState() => _CheckIndividualAnimalState();
+  _CheckIndividualAnimalAsOwnerState createState() => _CheckIndividualAnimalAsOwnerState();
 }
 
-class _CheckIndividualAnimalState extends State<CheckIndividualAnimal> {
+class _CheckIndividualAnimalAsOwnerState extends State<CheckIndividualAnimalAsOwner> {
+  final ImagePicker _picker = ImagePicker();
+  XFile? _imageFile;
 
   List<Map<String, dynamic>> animalData = [];
   List<String> imgPaths = [];
+
+
+  Future<void> checkIndividualAnimalAsOwner() async {
+    // print(widget.animalId);
+    final data = await widget.supabase
+      .from('animals')
+      .select('*, owner_guid(*)')
+      .eq('id', widget.animalId);
+
+    List<Map<String,dynamic>> tempAnimalData;
+    tempAnimalData = List<Map<String, dynamic>>.from(data);
+
+    setState(() {
+      animalData = tempAnimalData;
+    });
+    getPhotos(animalData);
+    print(data);
+
+  }
 
   Future<void> getPhotos(animalData) async {
     final List<FileObject> objects = await widget.supabase
@@ -34,29 +57,25 @@ class _CheckIndividualAnimalState extends State<CheckIndividualAnimal> {
     });
   }
 
-  Future<void> checkIndividualAnimal() async {
-    // print(widget.animalId);
-    final data = await widget.supabase
-      .from('animals')
-      .select('*, owner_guid(*)')
-      .eq('id', widget.animalId);
+  Future<void> uploadImage(selectedImage) async {
+    print(selectedImage);
+    // AQUI VA LA LOGICA DE SUPABASE PARA SUBIR LA IMAGEN
+  }
 
-    List<Map<String,dynamic>> tempAnimalData;
-    tempAnimalData = List<Map<String, dynamic>>.from(data);
+  Future<void> _selectImage() async {
+    final XFile? selectedImage = await _picker.pickImage(source: ImageSource.gallery);
 
     setState(() {
-      animalData = tempAnimalData;
+      _imageFile = selectedImage;
     });
-    
-    getPhotos(animalData);
-    print(data);
 
+    uploadImage(selectedImage);
   }
 
   @override
   void initState() {
     super.initState();
-    checkIndividualAnimal();
+    checkIndividualAnimalAsOwner();
   }
 
   @override
@@ -78,6 +97,13 @@ class _CheckIndividualAnimalState extends State<CheckIndividualAnimal> {
                 Text('Nombre del dueño: ${animalData[0]['owner_guid']['name']}'),
                 Text('Especie: ${animalData[0]['species']}'),
                 Text('Raza: ${animalData[0]['race']}'),
+                _imageFile != null
+                ? Image.file(File(_imageFile!.path))
+                : Text('No has seleccionado ninguna imagen'),
+                ElevatedButton(
+                  onPressed: _selectImage,
+                  child: Text('Subir imagen'),
+                ),
                 for (int i = 0; i < widget.imgPaths.length; i++)
                   Container(
                     width: 200,

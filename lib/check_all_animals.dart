@@ -70,25 +70,9 @@ class _CheckAllAnimalsState extends State<CheckAllAnimals> {
                       ),
                     ),
                   );
-                  
-                  // return Card(
-                  //   child: ListTile(
-                  //     title: Text('Nombre de mascota: ${animal['name']}'),
-                  //     subtitle: Text('Especie: ${animal['species']}     Dueño: ${animal['owner_guid']['name']}'),
-                  //   ),
-                  // );
                 },
               ),
             ),
-            // ElevatedButton(
-            //   onPressed: () {
-            //     Navigator.push(
-            //     context,
-            //       MaterialPageRoute(builder: (context) => CheckIndividualAnimal(supabase: widget.supabase)),
-            //     );
-            //   },
-            //   child: Text('Enviar'),
-            // ),
           ],
         ),
       ),

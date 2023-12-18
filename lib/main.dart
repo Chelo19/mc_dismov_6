@@ -34,8 +34,8 @@ class MyApp extends StatelessWidget {
       // home: RegisterScreen(supabase: getSupabase()),
       // home: LoginScreen(supabase: getSupabase()),
       // home: CreateAnimal(supabase: getSupabase()),
-      // home: CheckAnimals(supabase: getSupabase()),
-      home: CheckAllAnimals(supabase: getSupabase()),
+      home: CheckAnimals(supabase: getSupabase()),
+      // home: CheckAllAnimals(supabase: getSupabase()),
     );
   }
 }
