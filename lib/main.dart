@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_mao/login.dart';
 import 'package:supabase/supabase.dart';
+import 'HomeScreen.dart';
 import 'register.dart';
 import 'login.dart';
 import 'create_animal.dart';
@@ -34,7 +35,7 @@ class MyApp extends StatelessWidget {
       // home: RegisterScreen(supabase: getSupabase()),
       // home: LoginScreen(supabase: getSupabase()),
       // home: CreateAnimal(supabase: getSupabase()),
-      home: CheckAnimals(supabase: getSupabase()),
+      home: HomeScreen(supabase: getSupabase()),
       // home: CheckAllAnimals(supabase: getSupabase()),
     );
   }
