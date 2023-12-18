@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:google_mao/login.dart';
 import 'package:supabase/supabase.dart';
 import 'register.dart';
+import 'login.dart';
+import 'create_animal.dart';
+import 'check_animals.dart';
 
 void main() {
   final supabaseUrl = 'https://jtnxusdkumjwecqhskxm.supabase.co';
@@ -26,7 +30,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Supabase User Registration',
-      home: RegisterScreen(supabase: getSupabase()),
+      // home: RegisterScreen(supabase: getSupabase()),
+      // home: LoginScreen(supabase: getSupabase()),
+      // home: CreateAnimal(supabase: getSupabase()),
+      home: CheckAnimals(supabase: getSupabase()),
     );
   }
 }
