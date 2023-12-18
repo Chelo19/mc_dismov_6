@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_mao/check_animals.dart';
 import 'package:supabase/supabase.dart';
-import 'package:image_picker/image_picker.dart';
+// import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
 class CheckIndividualAnimalAsOwner extends StatefulWidget {
@@ -15,8 +15,8 @@ class CheckIndividualAnimalAsOwner extends StatefulWidget {
 }
 
 class _CheckIndividualAnimalAsOwnerState extends State<CheckIndividualAnimalAsOwner> {
-  final ImagePicker _picker = ImagePicker();
-  XFile? _imageFile;
+  // final ImagePicker _picker = ImagePicker();
+  // XFile? _imageFile;
 
   List<Map<String, dynamic>> animalData = [];
   List<String> imgPaths = [];
@@ -62,15 +62,15 @@ class _CheckIndividualAnimalAsOwnerState extends State<CheckIndividualAnimalAsOw
     // AQUI VA LA LOGICA DE SUPABASE PARA SUBIR LA IMAGEN
   }
 
-  Future<void> _selectImage() async {
-    final XFile? selectedImage = await _picker.pickImage(source: ImageSource.gallery);
+  // Future<void> _selectImage() async {
+  //   final XFile? selectedImage = await _picker.pickImage(source: ImageSource.gallery);
 
-    setState(() {
-      _imageFile = selectedImage;
-    });
+  //   setState(() {
+  //     _imageFile = selectedImage;
+  //   });
 
-    uploadImage(selectedImage);
-  }
+  //   uploadImage(selectedImage);
+  // }
 
   @override
   void initState() {
@@ -82,7 +82,7 @@ class _CheckIndividualAnimalAsOwnerState extends State<CheckIndividualAnimalAsOw
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Ver mascota individual'),
+        title: Text('Tu mascota'),
       ),
       body: Padding(
         padding: EdgeInsets.all(16.0),
@@ -93,17 +93,40 @@ class _CheckIndividualAnimalAsOwnerState extends State<CheckIndividualAnimalAsOw
             ? Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Nombre: ${animalData[0]['name']}'),
-                Text('Nombre del dueño: ${animalData[0]['owner_guid']['name']}'),
-                Text('Especie: ${animalData[0]['species']}'),
-                Text('Raza: ${animalData[0]['race']}'),
-                _imageFile != null
-                ? Image.file(File(_imageFile!.path))
-                : Text('No has seleccionado ninguna imagen'),
-                ElevatedButton(
-                  onPressed: _selectImage,
-                  child: Text('Subir imagen'),
-                ),
+                
+                SizedBox(height: 20),
+                Text('Nombre de la mascota:'),
+                Text('${animalData[0]['name']}'),
+                SizedBox(height: 20),
+                Text('Especie:'),
+                Text('${animalData[0]['species']}'),
+                SizedBox(height: 20),
+                Text('Raza:'),
+                Text('${animalData[0]['race']}'),
+                SizedBox(height: 20),
+                Text('Edad:'),
+                Text('${animalData[0]['age']}'),
+                SizedBox(height: 20),
+                Text('Enfermedades:'),
+                Text('${animalData[0]['diseases']}'),
+                SizedBox(height: 20),
+                Text('Medicamentos:'),
+                Text('${animalData[0]['meds']}'),
+                SizedBox(height: 20),
+                Text('Fechas de vacunación:'),
+                Text('${animalData[0]['prev_vac_dates']}'),
+                SizedBox(height: 20),
+                Text('Próxima fecha de vacunación:'),
+                Text('${animalData[0]['next_vac_dates']}'),
+                SizedBox(height: 20),
+
+                // _imageFile != null
+                // ? Image.file(File(_imageFile!.path))
+                // : Text('No has seleccionado ninguna imagen'),
+                // ElevatedButton(
+                //   onPressed: _selectImage,
+                //   child: Text('Subir imagen'),
+                // ),
                 for (int i = 0; i < widget.imgPaths.length; i++)
                   Container(
                     width: 200,

@@ -34,6 +34,14 @@ class _CheckIndividualAnimalState extends State<CheckIndividualAnimal> {
     });
   }
 
+  Future<void> saveChanges() async {
+    print(animalData);
+    await widget.supabase
+    .from('animals')
+    .update({ 'name': '${animalData[0]['name']}', 'species': '${animalData[0]['species']}', 'race': '${animalData[0]['race']}', 'age': '${animalData[0]['age']}', 'diseases': '${animalData[0]['diseases']}', 'meds': '${animalData[0]['meds']}', 'prev_vac_dates': '${animalData[0]['prev_vac_dates']}', 'next_vac_dates': '${animalData[0]['next_vac_dates']}' })
+    .match({ 'id': '${animalData[0]['id']}' });
+  }
+
   Future<void> checkIndividualAnimal() async {
     // print(widget.animalId);
     final data = await widget.supabase
@@ -74,10 +82,95 @@ class _CheckIndividualAnimalState extends State<CheckIndividualAnimal> {
             ? Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Nombre: ${animalData[0]['name']}'),
-                Text('Nombre del dueño: ${animalData[0]['owner_guid']['name']}'),
-                Text('Especie: ${animalData[0]['species']}'),
-                Text('Raza: ${animalData[0]['race']}'),
+                Text('Nombre de la mascota:'),
+                TextFormField(
+                  initialValue: animalData[0]['name'],
+                  onChanged: (newValue) {
+                    setState(() {
+                      animalData[0]['name'] = newValue;
+                    });
+                  },
+                ),
+                SizedBox(height: 20),
+                Text('Nombre del dueño:'),
+                SizedBox(height: 20),
+                Text('${animalData[0]['owner_guid']['name']}'),
+                TextFormField(
+                  initialValue: animalData[0]['species'],
+                  onChanged: (newValue) {
+                    setState(() {
+                      animalData[0]['species'] = newValue;
+                    });
+                  },
+                ),
+                SizedBox(height: 20),
+                Text('Raza:'),
+                TextFormField(
+                  initialValue: animalData[0]['race'],
+                  onChanged: (newValue) {
+                    setState(() {
+                      animalData[0]['race'] = newValue;
+                    });
+                  },
+                ),
+                SizedBox(height: 20),
+                Text('Edad:'),
+                TextFormField(
+                  initialValue: animalData[0]['age'],
+                  onChanged: (newValue) {
+                    setState(() {
+                      animalData[0]['age'] = newValue;
+                    });
+                  },
+                ),
+                SizedBox(height: 20),
+                Text('Enfermedades:'),
+                TextFormField(
+                  initialValue: animalData[0]['diseases'],
+                  onChanged: (newValue) {
+                    setState(() {
+                      animalData[0]['diseases'] = newValue;
+                    });
+                  },
+                ),
+                SizedBox(height: 20),
+                Text('Medicamentos:'),
+                TextFormField(
+                  initialValue: animalData[0]['meds'],
+                  onChanged: (newValue) {
+                    setState(() {
+                      animalData[0]['meds'] = newValue;
+                    });
+                  },
+                ),
+                SizedBox(height: 20),
+                Text('Fechas de vacunación:'),
+                TextFormField(
+                  initialValue: animalData[0]['prev_vac_dates'],
+                  onChanged: (newValue) {
+                    setState(() {
+                      animalData[0]['prev_vac_dates'] = newValue;
+                    });
+                  },
+                ),
+                SizedBox(height: 20),
+                Text('Próxima fecha de vacunación:'),
+                TextFormField(
+                  initialValue: animalData[0]['next_vac_dates'],
+                  onChanged: (newValue) {
+                    setState(() {
+                      animalData[0]['next_vac_dates'] = newValue;
+                    });
+                  },
+                ),
+                SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: () {
+                    saveChanges(); // Llamar a la función para guardar los cambios
+                  },
+                  child: Text('Guardar cambios'),
+                ),
+                SizedBox(height: 20),
                 for (int i = 0; i < widget.imgPaths.length; i++)
                   Container(
                     width: 200,
