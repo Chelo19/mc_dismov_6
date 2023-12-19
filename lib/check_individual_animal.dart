@@ -70,9 +70,18 @@ class _CheckIndividualAnimalState extends State<CheckIndividualAnimal> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Ver mascota individual'),
+    appBar: AppBar(
+      title: const Text(
+        'Descripcion Mascota',
+        style: TextStyle(
+          color: Colors.white,
+          fontSize: 24.0,
+          fontWeight: FontWeight.bold,
+        ),
       ),
+      centerTitle: true,
+      backgroundColor: Color.fromARGB(255, 52, 179, 105), // Color verde
+    ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(

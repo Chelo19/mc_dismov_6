@@ -42,9 +42,18 @@ class _CheckAnimalsState extends State<CheckAnimals> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Mis mascotas'),
+    appBar: AppBar(
+      title: const Text(
+        'Mis mascotas',
+        style: TextStyle(
+          color: Colors.white,
+          fontSize: 24.0,
+          fontWeight: FontWeight.bold,
+        ),
       ),
+      centerTitle: true,
+      backgroundColor: Color.fromARGB(255, 52, 179, 105), // Color verde
+    ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(

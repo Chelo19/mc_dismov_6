@@ -43,9 +43,18 @@ class _CheckAllAnimalsState extends State<CheckAllAnimals> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Todas las mascotas'),
+    appBar: AppBar(
+      title: const Text(
+        'Todas las mascotas',
+        style: TextStyle(
+          color: Colors.white,
+          fontSize: 24.0,
+          fontWeight: FontWeight.bold,
+        ),
       ),
+      centerTitle: true,
+      backgroundColor: Color.fromARGB(255, 52, 179, 105), // Color verde
+    ),
       body: Padding(
         padding: EdgeInsets.all(16.0),
         child: Column(

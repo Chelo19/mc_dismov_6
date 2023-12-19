@@ -82,9 +82,18 @@ class _CheckIndividualAnimalAsOwnerState extends State<CheckIndividualAnimalAsOw
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Tu mascota'),
+    appBar: AppBar(
+      title: const Text(
+        'Tu Mascota',
+        style: TextStyle(
+          color: Colors.white,
+          fontSize: 24.0,
+          fontWeight: FontWeight.bold,
+        ),
       ),
+      centerTitle: true,
+      backgroundColor: const Color.fromARGB(255, 52, 179, 105), // Color verde
+    ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(
@@ -93,55 +102,70 @@ class _CheckIndividualAnimalAsOwnerState extends State<CheckIndividualAnimalAsOw
             children: [
               animalData.isNotEmpty
                   ? Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(height: 20),
-                  const Text('Nombre de la mascota:'),
-                  Text('${animalData[0]['name']}'),
-                  const SizedBox(height: 20),
-                  const Text('Especie:'),
-                  Text('${animalData[0]['species']}'),
-                  const SizedBox(height: 20),
-                  const Text('Raza:'),
-                  Text('${animalData[0]['race']}'),
-                  const SizedBox(height: 20),
-                  const Text('Edad:'),
-                  Text('${animalData[0]['age']}'),
-                  const SizedBox(height: 20),
-                  const Text('Enfermedades:'),
-                  Text('${animalData[0]['diseases']}'),
-                  const SizedBox(height: 20),
-                  const Text('Medicamentos:'),
-                  Text('${animalData[0]['meds']}'),
-                  const SizedBox(height: 20),
-                  const Text('Fechas de vacunación:'),
-                  Text('${animalData[0]['prev_vac_dates']}'),
-                  const SizedBox(height: 20),
-                  const Text('Próxima fecha de vacunación:'),
-                  Text('${animalData[0]['next_vac_dates']}'),
-                  const SizedBox(height: 20),
-
-                  for (int i = 0; i < widget.imgPaths.length; i++)
-                    Container(
-                      width: 200,
-                      height: 200,
-                      child: Image.network(
-                        widget.imgPaths[i],
-                        fit: BoxFit.cover,
-                      ),
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SizedBox(height: 20),
+                        _buildDetail('Nombre de la mascota:', animalData[0]['name']),
+                        const SizedBox(height: 20),
+                        _buildDetail('Especie:', animalData[0]['species']),
+                        const SizedBox(height: 20),
+                        _buildDetail('Raza:', animalData[0]['race']),
+                        const SizedBox(height: 20),
+                        _buildDetail('Edad:', animalData[0]['age']),
+                        const SizedBox(height: 20),
+                        _buildDetail('Enfermedades:', animalData[0]['diseases']),
+                        const SizedBox(height: 20),
+                        _buildDetail('Medicamentos:', animalData[0]['meds']),
+                        const SizedBox(height: 20),
+                        _buildDetail('Fechas de vacunación:', animalData[0]['prev_vac_dates']),
+                        const SizedBox(height: 20),
+                        _buildDetail('Próxima fecha de vacunación:', animalData[0]['next_vac_dates']),
+                        const SizedBox(height: 20),
+                        for (int i = 0; i < widget.imgPaths.length; i++)
+                          Container(
+                            width: 200,
+                            height: 200,
+                            child: Image.network(
+                              widget.imgPaths[i],
+                              fit: BoxFit.cover,
+                            ),
+                          )
+                      ],
                     )
-                ],
-              )
                   : const Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('Cargando'),
-                ],
-              ),
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Cargando'),
+                      ],
+                    ),
             ],
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildDetail(String label, String value) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: const TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            color: Color.fromARGB(255, 52, 179, 105), // Color verde más oscuro
+          ),
+        ),
+        const SizedBox(height: 4),
+        Text(
+          value,
+          style: const TextStyle(
+            fontSize: 16,
+            color: Colors.black87,
+          ),
+        ),
+      ],
     );
   }
 }

@@ -79,9 +79,18 @@ class _CreateAnimalState extends State<CreateAnimal> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Registrar Mascota'),
+    appBar: AppBar(
+      title: const Text(
+        'Registrar Mascota',
+        style: TextStyle(
+          color: Colors.white,
+          fontSize: 24.0,
+          fontWeight: FontWeight.bold,
+        ),
       ),
+      centerTitle: true,
+      backgroundColor: Color.fromARGB(255, 52, 179, 105), // Color verde
+    ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
