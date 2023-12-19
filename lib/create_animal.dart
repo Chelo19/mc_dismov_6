@@ -18,7 +18,8 @@ class _CreateAnimalState extends State<CreateAnimal> {
   late String race = ''; // Inicializa con una cadena vacía
   late String age = ''; // Inicializa con una cadena vacía
   late String diseases = ''; // Inicializa con una cadena vacía
-  late String meds = ''; // Inicializa con una cadena vacía
+  late String meds = '';
+  File? imageFile;
 
   Future<void> checkSession() async {
     final Session? session = widget.supabase.auth.currentSession;
@@ -36,6 +37,56 @@ class _CreateAnimalState extends State<CreateAnimal> {
         'age': age, 
         'diseases': diseases, 
         'meds': meds});
+  }
+
+  Future<void> _getImageFromGallery() async {
+    final ImagePicker picker = ImagePicker();
+    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+    if (image != null) {
+      setState(() {
+        imageFile = File(image.path);
+      });
+    }
+  }
+
+  Future<void> _getImageFromCamera() async {
+    final ImagePicker picker = ImagePicker();
+    final XFile? image = await picker.pickImage(source: ImageSource.camera);
+    if (image != null) {
+      setState(() {
+        imageFile = File(image.path);
+      });
+    }
+  }
+
+  Future<void> _showImageSourceModal(BuildContext context) async {
+    await showModalBottomSheet(
+        context: context,
+        builder: (BuildContext context) {
+          return SafeArea(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                ListTile(
+                  leading: const Icon(Icons.photo_library),
+                  title: const Text('Subir desde la galería'),
+                  onTap: () {
+                    Navigator.pop(context);
+                    _getImageFromGallery();
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(Icons.camera_alt),
+                  title: const Text('Tomar una foto'),
+                  onTap: () {
+                    Navigator.pop(context);
+                    _getImageFromCamera();
+                  },
+                ),
+              ],
+            ),
+          );
+        });
   }
 
   @override
@@ -123,6 +174,23 @@ class _CreateAnimalState extends State<CreateAnimal> {
                   });
                 },
               ),
+
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () {
+                  _showImageSourceModal(context);
+                },
+                child: const Text('Agregar Imagen'),
+              ),
+
+              // Mostrar la imagen seleccionada o tomada
+              if (imageFile != null)
+                SizedBox(
+                  height: 200,
+                  width: 200,
+                  child: Image.file(imageFile!),
+                ),
+
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
