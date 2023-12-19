@@ -16,13 +16,17 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'PetCare Connect',
-          style: TextStyle(
-            color: Colors.green, // Cambiar color del texto del título
-            fontSize: 27.0, // Ajustar tamaño de fuente
-            fontWeight: FontWeight.bold, // Texto en negrita
-            letterSpacing: 1.5, // Añadir espaciado entre letras
+        title: Container(
+          color: Colors.white, // Fondo blanco para el contenedor del título
+          padding: const EdgeInsets.all(8.0), // Espaciado alrededor del título
+          child: const Text(
+            'PetCare Connect',
+            style: TextStyle(
+              color: Colors.green,
+              fontSize: 24.0,
+              fontWeight: FontWeight.bold,
+              letterSpacing: 1.5,
+            ),
           ),
         ),
       ),
@@ -46,10 +50,10 @@ class HomeScreen extends StatelessWidget {
               },
             ),
             ListTile(
-              title: const Text('Inicio de sesión'),
+              title: const Text('Cerrar sesion'),
               onTap: () {
                 // Navegar a la página de inicio de sesión
-                Navigator.push(
+                Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(builder: (context) => LoginScreen(supabase: supabase)),
                 );
