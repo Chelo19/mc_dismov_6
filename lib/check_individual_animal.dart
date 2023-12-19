@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:supabase/supabase.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class CheckIndividualAnimal extends StatefulWidget {
   CheckIndividualAnimal({required this.supabase, required this.animalId});
