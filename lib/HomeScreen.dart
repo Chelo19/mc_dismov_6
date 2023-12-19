@@ -7,10 +7,52 @@ import 'create_animal.dart';
 import 'check_animals.dart';
 import 'check_all_animals.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   final SupabaseClient supabase;
-
   HomeScreen({required this.supabase});
+
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  late String current_user = '';
+  late String current_user_role = '0';
+
+  Future<void> checkSession() async {
+    final Session? session = widget.supabase.auth.currentSession;
+    print(session);
+    if (session != null) {
+      current_user = session.user!.id;
+    }
+    print('current_user');
+    print(current_user);
+
+    final data = await widget.supabase
+    .from('users')
+    .select('*')
+    .eq('guid', current_user);
+
+    if(data[0]['role'] == 1){
+      print('object');
+      setState(() {
+        current_user_role = '1';
+      });
+    }
+
+    print(data[0]['role']);
+    print(current_user_role);
+  }
+
+  // Future<void> debug() async {
+  //   print('//////');
+  //   final Session? session = widget.supabase.auth.currentSession;
+  //   if (session != null) {
+  //     setState(() {
+  //       current_user = session.user!.id;
+  //     });
+  //   }
+  // }
 
   ListTile buildListTile(String title, Function() onTap) {
     return ListTile(
@@ -30,10 +72,16 @@ class HomeScreen extends StatelessWidget {
   }
 
   @override
+  void initState() {
+    super.initState();
+    checkSession();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white, // Fondo blanco para toda la barra de la aplicación
+        backgroundColor: Colors.white,
         title: const Text(
           'PetCare Connect',
           style: TextStyle(
@@ -65,21 +113,21 @@ class HomeScreen extends StatelessWidget {
               buildListTile('Registro', () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => RegisterScreen(supabase: supabase)),
+                  MaterialPageRoute(builder: (context) => RegisterScreen(supabase: widget.supabase)),
                 );
               }),
               const SizedBox(height: 20),
               buildListTile('Cerrar sesión', () {
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => LoginScreen(supabase: supabase)),
+                  MaterialPageRoute(builder: (context) => LoginScreen(supabase: widget.supabase)),
                 );
               }),
               const SizedBox(height: 20),
               buildListTile('Registro de mascota', () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => CreateAnimal(supabase: supabase)),
+                  MaterialPageRoute(builder: (context) => CreateAnimal(supabase: widget.supabase)),
                 );
               }),
               const SizedBox(height: 20),
@@ -88,19 +136,21 @@ class HomeScreen extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder: (context) => CheckAnimals(
-                      supabase: supabase,
-                      userId: supabase.auth.currentUser!.id,
+                      supabase: widget.supabase,
+                      userId: widget.supabase.auth.currentUser!.id,
                     ),
                   ),
                 );
               }),
               const SizedBox(height: 20),
-              buildListTile('Todas las mascotas', () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => CheckAllAnimals(supabase: supabase)),
-                );
-              }),
+              current_user_role == '1' ?
+                buildListTile('Todas las mascotas', () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => CheckAllAnimals(supabase: widget.supabase)),
+                  );
+                })
+              :
               const SizedBox(height: 20),
             ],
           ),
