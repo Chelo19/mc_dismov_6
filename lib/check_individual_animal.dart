@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:google_mao/check_animals.dart';
 import 'package:supabase/supabase.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class CheckIndividualAnimal extends StatefulWidget {
   CheckIndividualAnimal({required this.supabase, required this.animalId});
@@ -13,22 +13,22 @@ class CheckIndividualAnimal extends StatefulWidget {
 }
 
 class _CheckIndividualAnimalState extends State<CheckIndividualAnimal> {
-
   List<Map<String, dynamic>> animalData = [];
   List<String> imgPaths = [];
 
   Future<void> getPhotos(animalData) async {
     final List<FileObject> objects = await widget.supabase
-    .storage
-    .from('animals_pics')
-    .list(path: '${animalData[0]['id']}');
+        .storage
+        .from('animals_pics')
+        .list(path: '${animalData[0]['id']}');
 
     List<String> paths = [];
     for (var object in objects) {
       print('Object Name: ${object.name}');
-      paths.add('https://jtnxusdkumjwecqhskxm.supabase.co/storage/v1/object/public/animals_pics/${animalData[0]['id']}/${object.name}');
+      paths.add(
+          'https://jtnxusdkumjwecqhskxm.supabase.co/storage/v1/object/public/animals_pics/${animalData[0]['id']}/${object.name}');
     }
-    
+
     setState(() {
       widget.imgPaths = paths;
     });
@@ -83,20 +83,33 @@ class _CheckIndividualAnimalState extends State<CheckIndividualAnimal> {
   Future<void> checkIndividualAnimal() async {
     // print(widget.animalId);
     final data = await widget.supabase
-      .from('animals')
-      .select('*, owner_guid(*)')
-      .eq('id', widget.animalId);
+        .from('animals')
+        .select('*, owner_guid(*)')
+        .eq('id', widget.animalId);
 
-    List<Map<String,dynamic>> tempAnimalData;
+    List<Map<String, dynamic>> tempAnimalData;
     tempAnimalData = List<Map<String, dynamic>>.from(data);
 
     setState(() {
       animalData = tempAnimalData;
     });
-    
+
     getPhotos(animalData);
     print(data);
+  }
 
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime.now(),
+      lastDate: DateTime(2101),
+    );
+    if (picked != null) {
+      setState(() {
+        animalData[0]['next_vac_dates'] = picked.toString(); // Guarda la fecha seleccionada
+      });
+    }
   }
 
   @override
@@ -108,18 +121,18 @@ class _CheckIndividualAnimalState extends State<CheckIndividualAnimal> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-    appBar: AppBar(
-      title: const Text(
-        'Descripcion Mascota',
-        style: TextStyle(
-          color: Colors.white,
-          fontSize: 24.0,
-          fontWeight: FontWeight.bold,
+      appBar: AppBar(
+        title: const Text(
+          'Descripcion Mascota',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 24.0,
+            fontWeight: FontWeight.bold,
+          ),
         ),
+        centerTitle: true,
+        backgroundColor: const Color.fromARGB(255, 52, 179, 105), // Color verde
       ),
-      centerTitle: true,
-      backgroundColor: const Color.fromARGB(255, 52, 179, 105), // Color verde
-    ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(
@@ -139,7 +152,7 @@ class _CheckIndividualAnimalState extends State<CheckIndividualAnimal> {
                             });
                           },
                         ),
-                        const SizedBox(height: 20),
+                         const SizedBox(height: 20),
                         const Text('Nombre del dueño:'),
                         const SizedBox(height: 20),
                         Text('${animalData[0]['owner_guid']['name']}'),
@@ -205,22 +218,30 @@ class _CheckIndividualAnimalState extends State<CheckIndividualAnimal> {
                         ),
                         const SizedBox(height: 20),
                         const Text('Próxima fecha de vacunación:'),
-                        TextFormField(
-                          initialValue: animalData[0]['next_vac_dates'],
-                          onChanged: (newValue) {
-                            setState(() {
-                              animalData[0]['next_vac_dates'] = newValue;
-                            });
+                        InkWell(
+                          onTap: () {
+                            _selectDate(context);
                           },
+                          child: InputDecorator(
+                            decoration: const InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText: 'Seleccionar fecha',
+                            ),
+                            child: Text(
+                              animalData[0]['next_vac_dates'] ??
+                                  'Seleccione una fecha',
+                            ),
+                          ),
                         ),
                         const SizedBox(height: 20),
                         ElevatedButton(
                           onPressed: () {
-                            saveChanges(); // Llamar a la función para guardar los cambios
+                            saveChanges();
                           },
                           child: const Text('Guardar cambios'),
                         ),
                         const SizedBox(height: 20),
+                        // Mostrar imágenes de la mascota
                         for (int i = 0; i < widget.imgPaths.length; i++)
                           Container(
                             width: 200,
