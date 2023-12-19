@@ -52,7 +52,7 @@ class _CreateAnimalState extends State<CreateAnimal> {
       'meds': meds,
     });
 
-    // Verificar si la inserción fue exitosa
+    /* Verificar si la inserción fue exitosa
     if (response.error == null) {
       // Muestra un mensaje de éxito
       ScaffoldMessenger.of(context).showSnackBar(
@@ -67,7 +67,7 @@ class _CreateAnimalState extends State<CreateAnimal> {
           content: Text('Error al registrar la mascota'),
         ),
       );
-    }
+    }*/
   }
 
   @override
