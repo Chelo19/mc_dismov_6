@@ -12,6 +12,23 @@ class HomeScreen extends StatelessWidget {
 
   HomeScreen({required this.supabase});
 
+  ListTile buildListTile(String title, Function() onTap) {
+    return ListTile(
+      title: Text(
+        title,
+        style: const TextStyle(
+          color: Colors.black87,
+          fontSize: 18.0,
+          fontWeight: FontWeight.w500,
+          letterSpacing: 0.8,
+        ),
+      ),
+      onTap: onTap,
+      hoverColor: Colors.lightGreen.withOpacity(0.3),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 20.0),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,70 +45,65 @@ class HomeScreen extends StatelessWidget {
         ),
       ),
       drawer: Drawer(
-        child: ListView(
-          children: [
-            const DrawerHeader(
-              decoration: BoxDecoration(
-                color: Colors.blue,
+        child: Container(
+          color: const Color.fromARGB(255, 255, 255, 255),
+          child: ListView(
+            children: [
+              Container(
+                decoration: const BoxDecoration(
+                  color: Colors.green,
+                ),
+                padding: const EdgeInsets.all(20.0),
+                child: const Center(
+                  child: Text(
+                    'Menú',
+                    style: TextStyle(color: Colors.white, fontSize: 24.0, fontWeight: FontWeight.bold),
+                  ),
+                ),
               ),
-              child: Text('Menú'),
-            ),
-            ListTile(
-              title: const Text('Registro'),
-              onTap: () {
-                // Navegar a la página de registro
+              const SizedBox(height: 20),
+              buildListTile('Registro', () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => RegisterScreen(supabase: supabase)),
                 );
-              },
-            ),
-            ListTile(
-              title: const Text('Cerrar sesion'),
-              onTap: () {
-                // Navegar a la página de inicio de sesión
+              }),
+              const SizedBox(height: 20),
+              buildListTile('Cerrar sesión', () {
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(builder: (context) => LoginScreen(supabase: supabase)),
                 );
-              },
-            ),
-            ListTile(
-              title: const Text('Registro de mascota'),
-              onTap: () {
-                // Navegar a la página de registro de mascota
+              }),
+              const SizedBox(height: 20),
+              buildListTile('Registro de mascota', () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => CreateAnimal(supabase: supabase)),
                 );
-              },
-            ),
-            ListTile(
-              title: const Text('Mis mascotas'),
-              onTap: () {
-                // Navegar a la página de mis mascotas
+              }),
+              const SizedBox(height: 20),
+              buildListTile('Mis mascotas', () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => CheckAnimals(
-                          supabase: supabase,
-                        userId: supabase.auth.currentUser!.id,
-                      ),
+                    builder: (context) => CheckAnimals(
+                      supabase: supabase,
+                      userId: supabase.auth.currentUser!.id,
+                    ),
                   ),
                 );
-              },
-            ),
-            ListTile(
-              title: const Text('Todas las mascotas'),
-              onTap: () {
-                // Navegar a la página de todas las mascotas
+              }),
+              const SizedBox(height: 20),
+              buildListTile('Todas las mascotas', () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => CheckAllAnimals(supabase: supabase)),
                 );
-              },
-            ),
-          ],
+              }),
+              const SizedBox(height: 20),
+            ],
+          ),
         ),
       ),
       body: Center(
