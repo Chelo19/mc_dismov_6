@@ -16,6 +16,8 @@ class CheckIndividualAnimalAsOwner extends StatefulWidget {
 class _CheckIndividualAnimalAsOwnerState extends State<CheckIndividualAnimalAsOwner> {
   List<Map<String, dynamic>> animalData = [];
   List<String> imgPaths = [];
+  final ImagePicker _picker = ImagePicker();
+  late XFile? _imageFile;
 
   Future<void> checkIndividualAnimalAsOwner() async {
     final data = await widget.supabase
@@ -59,6 +61,8 @@ class _CheckIndividualAnimalAsOwnerState extends State<CheckIndividualAnimalAsOw
         selectedImage, // Archivo a subir
 
       );
+
+      
     } catch (e) {
       // Manejo de excepciones
       print('Error: $e');
@@ -67,11 +71,40 @@ class _CheckIndividualAnimalAsOwnerState extends State<CheckIndividualAnimalAsOw
 
   Future<void> _selectImage() async {
     final ImagePicker picker = ImagePicker();
-    final XFile? selectedImage = await picker.pickImage(source: ImageSource.gallery);
-
-    if (selectedImage != null) {
-      uploadImage(File(selectedImage.path));
-    }
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return SafeArea(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              ListTile(
+                leading: const Icon(Icons.photo_library),
+                title: const Text('Subir desde la galería'),
+                onTap: () async {
+                  Navigator.pop(context);
+                  final XFile? selectedImage = await picker.pickImage(source: ImageSource.gallery);
+                  if (selectedImage != null) {
+                    uploadImage(File(selectedImage.path));
+                  }
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.camera_alt),
+                title: const Text('Tomar una foto'),
+                onTap: () async {
+                  Navigator.pop(context);
+                  final XFile? selectedImage = await picker.pickImage(source: ImageSource.camera);
+                  if (selectedImage != null) {
+                    uploadImage(File(selectedImage.path));
+                  }
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 
   @override
