@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_mao/register.dart';
 import 'package:supabase/supabase.dart';
+import 'HomeScreen.dart';
+import 'auth_state.dart';
 
 class LoginScreen extends StatefulWidget {
   final SupabaseClient supabase;
@@ -20,17 +22,20 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Future<void> loginUser() async {
-    print(email);
-    print(password);
-
     final AuthResponse res = await widget.supabase.auth.signInWithPassword(
       email: email,
       password: password,
     );
-    final Session? session = res.session;
-    final User? user = res.user;
 
-    print(session);
+    final User? user = widget.supabase.auth.currentUser;
+
+    if (user != null) {
+      isLoggedIn = true; // Actualiza el estado de la sesión al iniciar sesión correctamente
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => HomeScreen(supabase: widget.supabase)),
+      );
+    }
   }
 
   @override

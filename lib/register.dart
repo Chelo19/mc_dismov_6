@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_mao/login.dart';
 import 'package:supabase/supabase.dart';
+import 'auth_state.dart';
 
 class RegisterScreen extends StatefulWidget {
   final SupabaseClient supabase;
