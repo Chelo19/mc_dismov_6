@@ -16,17 +16,14 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Container(
-          color: Colors.white, // Fondo blanco para el contenedor del título
-          padding: const EdgeInsets.all(8.0), // Espaciado alrededor del título
-          child: const Text(
-            'PetCare Connect',
-            style: TextStyle(
-              color: Colors.green,
-              fontSize: 24.0,
-              fontWeight: FontWeight.bold,
-              letterSpacing: 1.5,
-            ),
+        backgroundColor: Colors.white, // Fondo blanco para toda la barra de la aplicación
+        title: const Text(
+          'PetCare Connect',
+          style: TextStyle(
+            color: Colors.green,
+            fontSize: 24.0,
+            fontWeight: FontWeight.bold,
+            letterSpacing: 1.5,
           ),
         ),
       ),
