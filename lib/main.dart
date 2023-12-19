@@ -36,6 +36,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Supabase User Registration',
+      debugShowCheckedModeBanner: false,
       home: isLoggedIn
           ? HomeScreen(supabase: getSupabase()) // Muestra la pantalla principal si isLoggedIn es true
           : LoginScreen(supabase: getSupabase()), // Muestra la pantalla de inicio de sesión si isLoggedIn es false
