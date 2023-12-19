@@ -62,7 +62,7 @@ class _CheckIndividualAnimalAsOwnerState extends State<CheckIndividualAnimalAsOw
 
       );
 
-      
+
     } catch (e) {
       // Manejo de excepciones
       print('Error: $e');
