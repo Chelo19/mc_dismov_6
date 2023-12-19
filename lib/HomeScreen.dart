@@ -63,7 +63,12 @@ class HomeScreen extends StatelessWidget {
                 // Navegar a la página de mis mascotas
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => CheckAnimals(supabase: supabase)),
+                  MaterialPageRoute(
+                      builder: (context) => CheckAnimals(
+                          supabase: supabase,
+                        userId: supabase.auth.currentUser!.id,
+                      ),
+                  ),
                 );
               },
             ),

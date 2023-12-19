@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:supabase/supabase.dart';
-import 'package:image_picker/image_picker.dart';
-import 'dart:io';
 
 class CreateAnimal extends StatefulWidget {
   final SupabaseClient supabase;
@@ -12,81 +10,70 @@ class CreateAnimal extends StatefulWidget {
 }
 
 class _CreateAnimalState extends State<CreateAnimal> {
-  late String current_user = 'd70b27a2-0297-4d60-90b4-f69998fc6a11';
-  late String name = ''; // Inicializa con una cadena vacía
-  late String species = ''; // Inicializa con una cadena vacía
-  late String race = ''; // Inicializa con una cadena vacía
-  late String age = ''; // Inicializa con una cadena vacía
-  late String diseases = ''; // Inicializa con una cadena vacía
+  late String current_user = '';
+  late String name = '';
+  late String species = '';
+  late String race = '';
+  late String age = '';
+  late String diseases = '';
   late String meds = '';
-  File? imageFile;
 
   Future<void> checkSession() async {
     final Session? session = widget.supabase.auth.currentSession;
-    print(session);
+    if (session != null) {
+      setState(() {
+        current_user = session.user!.id;
+      });
+    }
   }
 
   Future<void> insertAnimal() async {
-    await widget.supabase
-      .from('animals')
-      .insert({
-        'owner_guid': current_user, 
-        'name': name, 
-        'species': species, 
-        'race': race, 
-        'age': age, 
-        'diseases': diseases, 
-        'meds': meds});
-  }
+    // Validar los campos de entrada
+    if (name.isEmpty || species.isEmpty) {
+      // Muestra un mensaje de error si los campos obligatorios están vacíos
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Nombre y especie son obligatorios'),
+        ),
+      );
+      return;
+    }
 
-  Future<void> _getImageFromGallery() async {
-    final ImagePicker picker = ImagePicker();
-    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
-    if (image != null) {
-      setState(() {
-        imageFile = File(image.path);
-      });
+    // Insertar la mascota en la base de datos
+    final response = await widget.supabase
+        .from('animals')
+        .insert({
+      'owner_guid': current_user,
+      'name': name,
+      'species': species,
+      'race': race,
+      'age': age,
+      'diseases': diseases,
+      'meds': meds,
+    });
+
+    // Verificar si la inserción fue exitosa
+    if (response.error == null) {
+      // Muestra un mensaje de éxito
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Mascota registrada exitosamente'),
+        ),
+      );
+    } else {
+      // Muestra un mensaje de error si hay algún problema
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Error al registrar la mascota'),
+        ),
+      );
     }
   }
 
-  Future<void> _getImageFromCamera() async {
-    final ImagePicker picker = ImagePicker();
-    final XFile? image = await picker.pickImage(source: ImageSource.camera);
-    if (image != null) {
-      setState(() {
-        imageFile = File(image.path);
-      });
-    }
-  }
-
-  Future<void> _showImageSourceModal(BuildContext context) async {
-    await showModalBottomSheet(
-        context: context,
-        builder: (BuildContext context) {
-          return SafeArea(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                ListTile(
-                  leading: const Icon(Icons.photo_library),
-                  title: const Text('Subir desde la galería'),
-                  onTap: () {
-                    Navigator.pop(context);
-                    _getImageFromGallery();
-                  },
-                ),
-                ListTile(
-                  leading: const Icon(Icons.camera_alt),
-                  title: const Text('Tomar una foto'),
-                  onTap: () {
-                    Navigator.pop(context);
-                    _getImageFromCamera();
-                  },
-                ),
-              ],
-            ),
-          );
-        });
+  @override
+  void initState() {
+    super.initState();
+    checkSession();
   }
 
   @override
@@ -103,14 +90,14 @@ class _CreateAnimalState extends State<CreateAnimal> {
             children: <Widget>[
               const SizedBox(height: 20),
               TextFormField(
-                  decoration: const InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Nombre de la mascota',
                   border: OutlineInputBorder(),
                 ),
                 keyboardType: TextInputType.emailAddress,
                 onChanged: (value) {
                   setState(() {
-                    name = value; // Almacena el valor del correo electrónico
+                    name = value;
                   });
                 },
               ),
@@ -122,7 +109,7 @@ class _CreateAnimalState extends State<CreateAnimal> {
                 ),
                 onChanged: (value) {
                   setState(() {
-                    species = value; // Almacena el valor de la contraseña
+                    species = value;
                   });
                 },
               ),
@@ -134,7 +121,7 @@ class _CreateAnimalState extends State<CreateAnimal> {
                 ),
                 onChanged: (value) {
                   setState(() {
-                    race = value; // Almacena el valor de la contraseña
+                    race = value;
                   });
                 },
               ),
@@ -146,7 +133,7 @@ class _CreateAnimalState extends State<CreateAnimal> {
                 ),
                 onChanged: (value) {
                   setState(() {
-                    age = value; // Almacena el valor de la contraseña
+                    age = value;
                   });
                 },
               ),
@@ -158,7 +145,7 @@ class _CreateAnimalState extends State<CreateAnimal> {
                 ),
                 onChanged: (value) {
                   setState(() {
-                    diseases = value; // Almacena el valor de la contraseña
+                    diseases = value;
                   });
                 },
               ),
@@ -170,31 +157,14 @@ class _CreateAnimalState extends State<CreateAnimal> {
                 ),
                 onChanged: (value) {
                   setState(() {
-                    meds = value; // Almacena el valor de la contraseña
+                    meds = value;
                   });
                 },
               ),
-
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
-                  _showImageSourceModal(context);
-                },
-                child: const Text('Agregar Imagen'),
-              ),
-
-              // Mostrar la imagen seleccionada o tomada
-              if (imageFile != null)
-                SizedBox(
-                  height: 200,
-                  width: 200,
-                  child: Image.file(imageFile!),
-                ),
-
-              const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {
-                  insertAnimal(); // Llama a la función de registro con los valores ingresados
+                  insertAnimal();
                 },
                 child: const Text('Enviar'),
               ),

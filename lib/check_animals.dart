@@ -1,3 +1,4 @@
+//check_animals.dart
 import 'package:flutter/material.dart';
 import 'package:google_mao/check_individual_animal.dart';
 import 'package:google_mao/check_individual_animal_as_owner.dart';
@@ -5,40 +6,24 @@ import 'package:supabase/supabase.dart';
 
 class CheckAnimals extends StatefulWidget {
   final SupabaseClient supabase;
-  CheckAnimals({required this.supabase});
+  final String userId; // Agregar el ID del usuario como parámetro
+  CheckAnimals({required this.supabase, required this.userId});
 
   @override
   _CheckAnimalsState createState() => _CheckAnimalsState();
 }
 
 class _CheckAnimalsState extends State<CheckAnimals> {
-  late String current_user = 'd70b27a2-0297-4d60-90b4-f69998fc6a11';  // esto se tiene que cambiar a una funcion que obtenga el id
-  late String email = 'marcelo1@gmail.com';  // esto se tiene que cambiar a una funcion que obtenga el id
-  late String pass = 'marcelo';  // esto se tiene que cambiar a una funcion que obtenga el id
 
   List<Map<String, dynamic>> animalsData = [];
 
-  Future<void> checkSession() async {
-    final AuthResponse res = await widget.supabase.auth.signInWithPassword(
-      email: email,
-      password: pass,
-    );
-
-    final User? user = widget.supabase.auth.currentUser;
-    // current_user = user!.id;
-    // print(user!.id);
-    setState(() {   // esto no funciona
-      current_user = user!.id;
-    });
-  }
-
   Future<void> checkAnimals() async {
     final data = await widget.supabase
-    .from('animals')
-    .select('*')
-    .eq('owner_guid', current_user);
+        .from('animals')
+        .select('*')
+        .eq('owner_guid', widget.userId); // Usar el ID del usuario actual
 
-    List<Map<String,dynamic>> tempAnimalsData;
+    List<Map<String, dynamic>> tempAnimalsData;
     tempAnimalsData = List<Map<String, dynamic>>.from(data);
 
     print(tempAnimalsData);
@@ -46,14 +31,12 @@ class _CheckAnimalsState extends State<CheckAnimals> {
     setState(() {
       animalsData = tempAnimalsData;
     });
- 
   }
 
   @override
   void initState() {
     super.initState();
     checkAnimals();
-    checkSession();
   }
 
   @override
