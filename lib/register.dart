@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_mao/login.dart';
 import 'package:supabase/supabase.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -32,21 +33,26 @@ class _RegisterScreenState extends State<RegisterScreen> {
     .from('users')
     .insert({'email': email, 'name': name, 'guid': user!.id});
 
+    // ignore: use_build_context_synchronously
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => LoginScreen(supabase: widget.supabase)),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Registro'),
+        title: const Text('Registro'),
       ),
       body: Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             TextFormField(
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Nombre',
                 border: OutlineInputBorder(),
               ),
@@ -57,9 +63,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 });
               },
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             TextFormField(
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Correo electrónico',
                 border: OutlineInputBorder(),
               ),
@@ -70,9 +76,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 });
               },
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             TextFormField(
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Contraseña',
                 border: OutlineInputBorder(),
               ),
@@ -83,12 +89,24 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 });
               },
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
                 registerUser(); // Llama a la función de registro con los valores ingresados
               },
-              child: Text('Registrarse'),
+              child: const Text('Registrarse'),
+            ),
+
+            const SizedBox(height: 20),
+            const Text('Ya tienes cuenta?'),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => LoginScreen(supabase: widget.supabase)),
+                );
+              },
+              child: const Text('Inicia sesion'),
             ),
           ],
         ),
