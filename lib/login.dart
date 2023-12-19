@@ -77,13 +77,6 @@ class _LoginScreenState extends State<LoginScreen> {
               },
               child: const Text('Iniciar Sesion'),
             ),
-            ElevatedButton(
-              onPressed: () {
-                checkSession(); // Llama a la función de registro con los valores ingresados
-              },
-              child: const Text('Revisar sesion'),
-            ),
-
             const SizedBox(height: 20),
             const Text('No tienes cuenta?'),
             ElevatedButton(

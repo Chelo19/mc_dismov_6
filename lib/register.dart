@@ -34,7 +34,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     .insert({'email': email, 'name': name, 'guid': user!.id});
 
     // ignore: use_build_context_synchronously
-    Navigator.push(
+    Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (context) => LoginScreen(supabase: widget.supabase)),
     );
