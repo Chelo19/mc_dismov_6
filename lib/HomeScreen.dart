@@ -16,19 +16,19 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Tu aplicación'),
+        title: const Text('PetCare Connect'),
       ),
       drawer: Drawer(
         child: ListView(
           children: [
-            DrawerHeader(
+            const DrawerHeader(
               decoration: BoxDecoration(
                 color: Colors.blue,
               ),
               child: Text('Menú'),
             ),
             ListTile(
-              title: Text('Registro'),
+              title: const Text('Registro'),
               onTap: () {
                 // Navegar a la página de registro
                 Navigator.push(
@@ -38,7 +38,7 @@ class HomeScreen extends StatelessWidget {
               },
             ),
             ListTile(
-              title: Text('Inicio de sesión'),
+              title: const Text('Inicio de sesión'),
               onTap: () {
                 // Navegar a la página de inicio de sesión
                 Navigator.push(
@@ -48,7 +48,7 @@ class HomeScreen extends StatelessWidget {
               },
             ),
             ListTile(
-              title: Text('Registro de mascota'),
+              title: const Text('Registro de mascota'),
               onTap: () {
                 // Navegar a la página de registro de mascota
                 Navigator.push(
@@ -58,7 +58,7 @@ class HomeScreen extends StatelessWidget {
               },
             ),
             ListTile(
-              title: Text('Mis mascotas'),
+              title: const Text('Mis mascotas'),
               onTap: () {
                 // Navegar a la página de mis mascotas
                 Navigator.push(
@@ -68,7 +68,7 @@ class HomeScreen extends StatelessWidget {
               },
             ),
             ListTile(
-              title: Text('Todas las mascotas'),
+              title: const Text('Todas las mascotas'),
               onTap: () {
                 // Navegar a la página de todas las mascotas
                 Navigator.push(
@@ -80,7 +80,7 @@ class HomeScreen extends StatelessWidget {
           ],
         ),
       ),
-      body: Center(
+      body: const Center(
         child: Text('Contenido principal'),
       ),
     );

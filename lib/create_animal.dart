@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:supabase/supabase.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
 
 class CreateAnimal extends StatefulWidget {
   final SupabaseClient supabase;
@@ -26,101 +28,111 @@ class _CreateAnimalState extends State<CreateAnimal> {
   Future<void> insertAnimal() async {
     await widget.supabase
       .from('animals')
-      .insert({'owner_guid': current_user, 'name': name, 'species': species, 'race': race, 'age': age, 'diseases': diseases, 'meds': meds});
+      .insert({
+        'owner_guid': current_user, 
+        'name': name, 
+        'species': species, 
+        'race': race, 
+        'age': age, 
+        'diseases': diseases, 
+        'meds': meds});
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Registrar Mascota'),
+        title: const Text('Registrar Mascota'),
       ),
-      body: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            SizedBox(height: 20),
-            TextFormField(
-              decoration: InputDecoration(
-                labelText: 'Nombre de la mascota',
-                border: OutlineInputBorder(),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              const SizedBox(height: 20),
+              TextFormField(
+                  decoration: const InputDecoration(
+                  labelText: 'Nombre de la mascota',
+                  border: OutlineInputBorder(),
+                ),
+                keyboardType: TextInputType.emailAddress,
+                onChanged: (value) {
+                  setState(() {
+                    name = value; // Almacena el valor del correo electrónico
+                  });
+                },
               ),
-              keyboardType: TextInputType.emailAddress,
-              onChanged: (value) {
-                setState(() {
-                  name = value; // Almacena el valor del correo electrónico
-                });
-              },
-            ),
-            SizedBox(height: 20),
-            TextFormField(
-              decoration: InputDecoration(
-                labelText: 'Especie',
-                border: OutlineInputBorder(),
+              const SizedBox(height: 20),
+              TextFormField(
+                decoration: const InputDecoration(
+                  labelText: 'Especie',
+                  border: OutlineInputBorder(),
+                ),
+                onChanged: (value) {
+                  setState(() {
+                    species = value; // Almacena el valor de la contraseña
+                  });
+                },
               ),
-              onChanged: (value) {
-                setState(() {
-                  species = value; // Almacena el valor de la contraseña
-                });
-              },
-            ),
-            SizedBox(height: 20),
-            TextFormField(
-              decoration: InputDecoration(
-                labelText: 'Raza',
-                border: OutlineInputBorder(),
+              const SizedBox(height: 20),
+              TextFormField(
+                decoration: const InputDecoration(
+                  labelText: 'Raza',
+                  border: OutlineInputBorder(),
+                ),
+                onChanged: (value) {
+                  setState(() {
+                    race = value; // Almacena el valor de la contraseña
+                  });
+                },
               ),
-              onChanged: (value) {
-                setState(() {
-                  race = value; // Almacena el valor de la contraseña
-                });
-              },
-            ),
-            SizedBox(height: 20),
-            TextFormField(
-              decoration: InputDecoration(
-                labelText: 'Edad',
-                border: OutlineInputBorder(),
+              const SizedBox(height: 20),
+              TextFormField(
+                decoration: const InputDecoration(
+                  labelText: 'Edad',
+                  border: OutlineInputBorder(),
+                ),
+                onChanged: (value) {
+                  setState(() {
+                    age = value; // Almacena el valor de la contraseña
+                  });
+                },
               ),
-              onChanged: (value) {
-                setState(() {
-                  age = value; // Almacena el valor de la contraseña
-                });
-              },
-            ),
-            SizedBox(height: 20),
-            TextFormField(
-              decoration: InputDecoration(
-                labelText: 'Enfermedades',
-                border: OutlineInputBorder(),
+              const SizedBox(height: 20),
+              TextFormField(
+                decoration: const InputDecoration(
+                  labelText: 'Enfermedades',
+                  border: OutlineInputBorder(),
+                ),
+                onChanged: (value) {
+                  setState(() {
+                    diseases = value; // Almacena el valor de la contraseña
+                  });
+                },
               ),
-              onChanged: (value) {
-                setState(() {
-                  diseases = value; // Almacena el valor de la contraseña
-                });
-              },
-            ),
-            SizedBox(height: 20),
-            TextFormField(
-              decoration: InputDecoration(
-                labelText: 'Medicamentos',
-                border: OutlineInputBorder(),
+              const SizedBox(height: 20),
+              TextFormField(
+                decoration: const InputDecoration(
+                  labelText: 'Medicamentos',
+                  border: OutlineInputBorder(),
+                ),
+                onChanged: (value) {
+                  setState(() {
+                    meds = value; // Almacena el valor de la contraseña
+                  });
+                },
               ),
-              onChanged: (value) {
-                setState(() {
-                  meds = value; // Almacena el valor de la contraseña
-                });
-              },
-            ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                insertAnimal(); // Llama a la función de registro con los valores ingresados
-              },
-              child: Text('Enviar'),
-            ),
-          ],
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () {
+                  insertAnimal(); // Llama a la función de registro con los valores ingresados
+                },
+                child: const Text('Enviar'),
+              ),
+              const SizedBox(height: 20),
+            ],
+          ),
         ),
       ),
     );
