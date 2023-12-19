@@ -22,21 +22,42 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Future<void> loginUser() async {
+  print(email);
+  print(password);
+
+  try {
     final AuthResponse res = await widget.supabase.auth.signInWithPassword(
       email: email,
       password: password,
     );
+    final Session? session = res.session;
+    final User? user = res.user;
 
-    final User? user = widget.supabase.auth.currentUser;
-
-    if (user != null) {
-      isLoggedIn = true; // Actualiza el estado de la sesión al iniciar sesión correctamente
+    // Si el usuario no existe, muestra un mensaje de error
+    if (user == null) {
+      // Muestra un mensaje de error en la app
+      // ignore: use_build_context_synchronously
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Faltan datos'),
+        ),
+      );
+    } else {
+      // ignore: use_build_context_synchronously
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => HomeScreen(supabase: widget.supabase)),
+          MaterialPageRoute(builder: (context) => HomeScreen(supabase: widget.supabase)),
       );
     }
+  } catch (e) {
+    // ignore: use_build_context_synchronously
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Los datos son incorrectos'),
+      ),
+    );
   }
+}
 
   @override
   Widget build(BuildContext context) {
