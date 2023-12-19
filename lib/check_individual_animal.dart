@@ -35,11 +35,49 @@ class _CheckIndividualAnimalState extends State<CheckIndividualAnimal> {
   }
 
   Future<void> saveChanges() async {
-    print(animalData);
-    await widget.supabase
-    .from('animals')
-    .update({ 'name': '${animalData[0]['name']}', 'species': '${animalData[0]['species']}', 'race': '${animalData[0]['race']}', 'age': '${animalData[0]['age']}', 'diseases': '${animalData[0]['diseases']}', 'meds': '${animalData[0]['meds']}', 'prev_vac_dates': '${animalData[0]['prev_vac_dates']}', 'next_vac_dates': '${animalData[0]['next_vac_dates']}' })
-    .match({ 'id': '${animalData[0]['id']}' });
+    bool fieldsAreEmpty = false;
+    // Validar si algún campo está vacío
+    for (var data in animalData[0].values) {
+      if (data == null || data.toString().isEmpty) {
+        fieldsAreEmpty = true;
+        break;
+      }
+    }
+
+    if (fieldsAreEmpty) {
+      // Mostrar mensaje de campos vacíos
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('No puede haber campos vacíos.'),
+        ),
+      );
+    } else {
+      // Guardar los cambios
+      await widget.supabase
+          .from('animals')
+          .update({
+            'name': '${animalData[0]['name']}',
+            'species': '${animalData[0]['species']}',
+            'race': '${animalData[0]['race']}',
+            'age': '${animalData[0]['age']}',
+            'diseases': '${animalData[0]['diseases']}',
+            'meds': '${animalData[0]['meds']}',
+            'prev_vac_dates': '${animalData[0]['prev_vac_dates']}',
+            'next_vac_dates': '${animalData[0]['next_vac_dates']}'
+          })
+          .match({'id': '${animalData[0]['id']}'})
+          .then((_) {
+        // Mostrar mensaje de éxito
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Se han guardado los cambios con éxito.'),
+          ),
+        );
+      }).catchError((error) {
+        // Manejar errores, si es necesario
+        print('Error al guardar los cambios: $error');
+      });
+    }
   }
 
   Future<void> checkIndividualAnimal() async {
@@ -80,7 +118,7 @@ class _CheckIndividualAnimalState extends State<CheckIndividualAnimal> {
         ),
       ),
       centerTitle: true,
-      backgroundColor: Color.fromARGB(255, 52, 179, 105), // Color verde
+      backgroundColor: const Color.fromARGB(255, 52, 179, 105), // Color verde
     ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -105,6 +143,8 @@ class _CheckIndividualAnimalState extends State<CheckIndividualAnimal> {
                         const Text('Nombre del dueño:'),
                         const SizedBox(height: 20),
                         Text('${animalData[0]['owner_guid']['name']}'),
+                        const SizedBox(height: 20),
+                        const Text('Especie:'),
                         TextFormField(
                           initialValue: animalData[0]['species'],
                           onChanged: (newValue) {
