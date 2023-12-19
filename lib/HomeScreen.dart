@@ -16,7 +16,15 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('PetCare Connect'),
+        title: const Text(
+          'PetCare Connect',
+          style: TextStyle(
+            color: Colors.green, // Cambiar color del texto del título
+            fontSize: 27.0, // Ajustar tamaño de fuente
+            fontWeight: FontWeight.bold, // Texto en negrita
+            letterSpacing: 1.5, // Añadir espaciado entre letras
+          ),
+        ),
       ),
       drawer: Drawer(
         child: ListView(
@@ -85,8 +93,44 @@ class HomeScreen extends StatelessWidget {
           ],
         ),
       ),
-      body: const Center(
-        child: Text('Contenido principal'),
+      body: Center(
+        child: Container(
+          padding: const EdgeInsets.all(20.0),
+          decoration: BoxDecoration(
+            color: Colors.greenAccent,
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const Text(
+                'Sobre nosotros',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 30.0,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 20),
+              const Text(
+                'Somos una comunidad apasionada por el cuidado de las mascotas y estamos comprometidos con proporcionar información valiosa y recursos para garantizar la salud y el bienestar de tus mascotas.',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 18.0,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 20),
+              Image.asset(
+                'assets/images/perrosentado.png', // Ruta de la imagen local
+                height: 300, // Altura de la imagen
+                width: 300, // Ancho de la imagen
+                fit: BoxFit.cover, // Ajustar la imagen dentro del contenedor
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
