@@ -71,125 +71,126 @@ class _CheckIndividualAnimalState extends State<CheckIndividualAnimal> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Ver mascota individual'),
+        title: const Text('Ver mascota individual'),
       ),
       body: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            animalData.isNotEmpty
-            ? Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('Nombre de la mascota:'),
-                TextFormField(
-                  initialValue: animalData[0]['name'],
-                  onChanged: (newValue) {
-                    setState(() {
-                      animalData[0]['name'] = newValue;
-                    });
-                  },
-                ),
-                SizedBox(height: 20),
-                Text('Nombre del dueño:'),
-                SizedBox(height: 20),
-                Text('${animalData[0]['owner_guid']['name']}'),
-                TextFormField(
-                  initialValue: animalData[0]['species'],
-                  onChanged: (newValue) {
-                    setState(() {
-                      animalData[0]['species'] = newValue;
-                    });
-                  },
-                ),
-                SizedBox(height: 20),
-                Text('Raza:'),
-                TextFormField(
-                  initialValue: animalData[0]['race'],
-                  onChanged: (newValue) {
-                    setState(() {
-                      animalData[0]['race'] = newValue;
-                    });
-                  },
-                ),
-                SizedBox(height: 20),
-                Text('Edad:'),
-                TextFormField(
-                  initialValue: animalData[0]['age'],
-                  onChanged: (newValue) {
-                    setState(() {
-                      animalData[0]['age'] = newValue;
-                    });
-                  },
-                ),
-                SizedBox(height: 20),
-                Text('Enfermedades:'),
-                TextFormField(
-                  initialValue: animalData[0]['diseases'],
-                  onChanged: (newValue) {
-                    setState(() {
-                      animalData[0]['diseases'] = newValue;
-                    });
-                  },
-                ),
-                SizedBox(height: 20),
-                Text('Medicamentos:'),
-                TextFormField(
-                  initialValue: animalData[0]['meds'],
-                  onChanged: (newValue) {
-                    setState(() {
-                      animalData[0]['meds'] = newValue;
-                    });
-                  },
-                ),
-                SizedBox(height: 20),
-                Text('Fechas de vacunación:'),
-                TextFormField(
-                  initialValue: animalData[0]['prev_vac_dates'],
-                  onChanged: (newValue) {
-                    setState(() {
-                      animalData[0]['prev_vac_dates'] = newValue;
-                    });
-                  },
-                ),
-                SizedBox(height: 20),
-                Text('Próxima fecha de vacunación:'),
-                TextFormField(
-                  initialValue: animalData[0]['next_vac_dates'],
-                  onChanged: (newValue) {
-                    setState(() {
-                      animalData[0]['next_vac_dates'] = newValue;
-                    });
-                  },
-                ),
-                SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: () {
-                    saveChanges(); // Llamar a la función para guardar los cambios
-                  },
-                  child: Text('Guardar cambios'),
-                ),
-                SizedBox(height: 20),
-                for (int i = 0; i < widget.imgPaths.length; i++)
-                  Container(
-                    width: 200,
-                    height: 200,
-                    child: Image.network(
-                      widget.imgPaths[i],
-                      fit: BoxFit.cover,
+        padding: const EdgeInsets.all(16.0),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              animalData.isNotEmpty
+                  ? Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text('Nombre de la mascota:'),
+                        TextFormField(
+                          initialValue: animalData[0]['name'],
+                          onChanged: (newValue) {
+                            setState(() {
+                              animalData[0]['name'] = newValue;
+                            });
+                          },
+                        ),
+                        const SizedBox(height: 20),
+                        const Text('Nombre del dueño:'),
+                        const SizedBox(height: 20),
+                        Text('${animalData[0]['owner_guid']['name']}'),
+                        TextFormField(
+                          initialValue: animalData[0]['species'],
+                          onChanged: (newValue) {
+                            setState(() {
+                              animalData[0]['species'] = newValue;
+                            });
+                          },
+                        ),
+                        const SizedBox(height: 20),
+                        const Text('Raza:'),
+                        TextFormField(
+                          initialValue: animalData[0]['race'],
+                          onChanged: (newValue) {
+                            setState(() {
+                              animalData[0]['race'] = newValue;
+                            });
+                          },
+                        ),
+                        const SizedBox(height: 20),
+                        const Text('Edad:'),
+                        TextFormField(
+                          initialValue: animalData[0]['age'],
+                          onChanged: (newValue) {
+                            setState(() {
+                              animalData[0]['age'] = newValue;
+                            });
+                          },
+                        ),
+                        const SizedBox(height: 20),
+                        const Text('Enfermedades:'),
+                        TextFormField(
+                          initialValue: animalData[0]['diseases'],
+                          onChanged: (newValue) {
+                            setState(() {
+                              animalData[0]['diseases'] = newValue;
+                            });
+                          },
+                        ),
+                        const SizedBox(height: 20),
+                        const Text('Medicamentos:'),
+                        TextFormField(
+                          initialValue: animalData[0]['meds'],
+                          onChanged: (newValue) {
+                            setState(() {
+                              animalData[0]['meds'] = newValue;
+                            });
+                          },
+                        ),
+                        const SizedBox(height: 20),
+                        const Text('Fechas de vacunación:'),
+                        TextFormField(
+                          initialValue: animalData[0]['prev_vac_dates'],
+                          onChanged: (newValue) {
+                            setState(() {
+                              animalData[0]['prev_vac_dates'] = newValue;
+                            });
+                          },
+                        ),
+                        const SizedBox(height: 20),
+                        const Text('Próxima fecha de vacunación:'),
+                        TextFormField(
+                          initialValue: animalData[0]['next_vac_dates'],
+                          onChanged: (newValue) {
+                            setState(() {
+                              animalData[0]['next_vac_dates'] = newValue;
+                            });
+                          },
+                        ),
+                        const SizedBox(height: 20),
+                        ElevatedButton(
+                          onPressed: () {
+                            saveChanges(); // Llamar a la función para guardar los cambios
+                          },
+                          child: const Text('Guardar cambios'),
+                        ),
+                        const SizedBox(height: 20),
+                        for (int i = 0; i < widget.imgPaths.length; i++)
+                          Container(
+                            width: 200,
+                            height: 200,
+                            child: Image.network(
+                              widget.imgPaths[i],
+                              fit: BoxFit.cover,
+                            ),
+                          )
+                      ],
+                    )
+                  : const Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Cargando'),
+                      ],
                     ),
-                  )
-              ],
-            )
-            :
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('Cargando'),
-              ],
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
