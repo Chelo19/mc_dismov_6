@@ -82,70 +82,63 @@ class _CheckIndividualAnimalAsOwnerState extends State<CheckIndividualAnimalAsOw
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Tu mascota'),
+        title: const Text('Tu mascota'),
       ),
       body: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            animalData.isNotEmpty
-            ? Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                
-                SizedBox(height: 20),
-                Text('Nombre de la mascota:'),
-                Text('${animalData[0]['name']}'),
-                SizedBox(height: 20),
-                Text('Especie:'),
-                Text('${animalData[0]['species']}'),
-                SizedBox(height: 20),
-                Text('Raza:'),
-                Text('${animalData[0]['race']}'),
-                SizedBox(height: 20),
-                Text('Edad:'),
-                Text('${animalData[0]['age']}'),
-                SizedBox(height: 20),
-                Text('Enfermedades:'),
-                Text('${animalData[0]['diseases']}'),
-                SizedBox(height: 20),
-                Text('Medicamentos:'),
-                Text('${animalData[0]['meds']}'),
-                SizedBox(height: 20),
-                Text('Fechas de vacunación:'),
-                Text('${animalData[0]['prev_vac_dates']}'),
-                SizedBox(height: 20),
-                Text('Próxima fecha de vacunación:'),
-                Text('${animalData[0]['next_vac_dates']}'),
-                SizedBox(height: 20),
-
-                // _imageFile != null
-                // ? Image.file(File(_imageFile!.path))
-                // : Text('No has seleccionado ninguna imagen'),
-                // ElevatedButton(
-                //   onPressed: _selectImage,
-                //   child: Text('Subir imagen'),
-                // ),
-                for (int i = 0; i < widget.imgPaths.length; i++)
-                  Container(
-                    width: 200,
-                    height: 200,
-                    child: Image.network(
-                      widget.imgPaths[i],
-                      fit: BoxFit.cover,
+        padding: const EdgeInsets.all(16.0),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              animalData.isNotEmpty
+                  ? Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SizedBox(height: 20),
+                        const Text('Nombre de la mascota:'),
+                        Text('${animalData[0]['name']}'),
+                        const SizedBox(height: 20),
+                        const Text('Especie:'),
+                        Text('${animalData[0]['species']}'),
+                        const SizedBox(height: 20),
+                        const Text('Raza:'),
+                        Text('${animalData[0]['race']}'),
+                        const SizedBox(height: 20),
+                        const Text('Edad:'),
+                        Text('${animalData[0]['age']}'),
+                        const SizedBox(height: 20),
+                        const Text('Enfermedades:'),
+                        Text('${animalData[0]['diseases']}'),
+                        const SizedBox(height: 20),
+                        const Text('Medicamentos:'),
+                        Text('${animalData[0]['meds']}'),
+                        const SizedBox(height: 20),
+                        const Text('Fechas de vacunación:'),
+                        Text('${animalData[0]['prev_vac_dates']}'),
+                        const SizedBox(height: 20),
+                        const Text('Próxima fecha de vacunación:'),
+                        Text('${animalData[0]['next_vac_dates']}'),
+                        const SizedBox(height: 20),
+                        
+                        for (int i = 0; i < widget.imgPaths.length; i++)
+                          Container(
+                            width: 200,
+                            height: 200,
+                            child: Image.network(
+                              widget.imgPaths[i],
+                              fit: BoxFit.cover,
+                            ),
+                          )
+                      ],
+                    )
+                  : const Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Cargando'),
+                      ],
                     ),
-                  )
-              ],
-            )
-            :
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('Cargando'),
-              ],
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

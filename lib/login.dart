@@ -39,7 +39,7 @@ class _LoginScreenState extends State<LoginScreen> {
       // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Faltan datos'),
+          content: Text('Faltan'),
         ),
       );
     } else {
@@ -67,54 +67,56 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const SizedBox(height: 20),
-            TextFormField(
-              decoration: const InputDecoration(
-                labelText: 'Correo electrónico',
-                border: OutlineInputBorder(),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              const SizedBox(height: 140),
+              TextFormField(
+                decoration: const InputDecoration(
+                  labelText: 'Correo electrónico',
+                  border: OutlineInputBorder(),
+                ),
+                keyboardType: TextInputType.emailAddress,
+                onChanged: (value) {
+                  setState(() {
+                    email = value; // Almacena el valor del correo electrónico
+                  });
+                },
               ),
-              keyboardType: TextInputType.emailAddress,
-              onChanged: (value) {
-                setState(() {
-                  email = value; // Almacena el valor del correo electrónico
-                });
-              },
-            ),
-            const SizedBox(height: 20),
-            TextFormField(
-              decoration: const InputDecoration(
-                labelText: 'Contraseña',
-                border: OutlineInputBorder(),
+              const SizedBox(height: 20),
+              TextFormField(
+                decoration: const InputDecoration(
+                  labelText: 'Contraseña',
+                  border: OutlineInputBorder(),
+                ),
+                obscureText: true,
+                onChanged: (value) {
+                  setState(() {
+                    password = value; // Almacena el valor de la contraseña
+                  });
+                },
               ),
-              obscureText: true,
-              onChanged: (value) {
-                setState(() {
-                  password = value; // Almacena el valor de la contraseña
-                });
-              },
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                loginUser(); // Llama a la función de registro con los valores ingresados
-              },
-              child: const Text('Iniciar Sesion'),
-            ),
-            const SizedBox(height: 20),
-            const Text('No tienes cuenta?'),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => RegisterScreen(supabase: widget.supabase)),
-                );
-              },
-              child: const Text('Registrate'),
-            ),
-          ],
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () {
+                  loginUser(); // Llama a la función de registro con los valores ingresados
+                },
+                child: const Text('Iniciar Sesion'),
+              ),
+              const SizedBox(height: 20),
+              const Text('No tienes cuenta?'),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => RegisterScreen(supabase: widget.supabase)),
+                  );
+                },
+                child: const Text('Registrate'),
+              ),
+            ],
+          ),
         ),
       ),
     );

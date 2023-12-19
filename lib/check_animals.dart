@@ -60,10 +60,10 @@ class _CheckAnimalsState extends State<CheckAnimals> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Mis mascotas'),
+        title: const Text('Mis mascotas'),
       ),
       body: Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
@@ -76,7 +76,12 @@ class _CheckAnimalsState extends State<CheckAnimals> {
                     onTap: () => {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => CheckIndividualAnimalAsOwner(supabase: widget.supabase, animalId: animal['id'],)),
+                        MaterialPageRoute(
+                          builder: (context) => CheckIndividualAnimalAsOwner(
+                            supabase: widget.supabase,
+                            animalId: animal['id'],
+                          ),
+                        ),
                       ),
                     },
                     child: Card(
